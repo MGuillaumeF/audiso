@@ -12,21 +12,21 @@ type Parameters = {
 
 type Audit = {
     auditReportVersion: number;
-    vulnerabilities: {
-        [key: string]: {
-            isDirect: boolean;
-            severity: string;
-            fixAvailable: { name: string; version: string } | false;
-        };
-    };
     metadata: {
         vulnerabilities: {
             [key: string]: number;
         };
     };
+    vulnerabilities: {
+        [key: string]: {
+            fixAvailable: { name: string; version: string } | false;
+            isDirect: boolean;
+            severity: string;
+        };
+    };
 };
 
-async function auditToSonar(params: Parameters) {
+async function auditToSonar(params: Parameters) : Promise<void> {
     const npmSeverityToSonar = new Map([
         ["info", "INFO"],
         ["low", "MINOR"],
@@ -160,8 +160,8 @@ if (require.main === module) {
         },
     ];
 
-    configuration.forEach((value, index) => {
-        const newValue = args.find((arg, index) => {
+    configuration.forEach((value) => {
+        const newValue = args.find((arg) => {
             return value.alias
                 .map((reg) => RegExp(`${reg}=\\S+`))
                 .some((regTest) => regTest.test(arg));
@@ -169,7 +169,7 @@ if (require.main === module) {
         if (newValue) {
             value.value = path.resolve(process.cwd(), newValue.split("=")[1]);
         } else {
-            const optionIndex = args.findIndex((arg, index) => {
+            const optionIndex = args.findIndex((arg) => {
                 return value.alias.some((regTest) => regTest === arg);
             });
             if (optionIndex !== -1) {
@@ -197,6 +197,6 @@ if (require.main === module) {
     auditToSonar(params as Parameters);
 }
 
-const exp = { auditToSonar };
+const audiso = { auditToSonar };
 
-export default exp;
+export default audiso;
