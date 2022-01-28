@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+      "allowJs": false,
+      "skipLibCheck": true,
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "alwaysStrict": true,
+      "noImplicitAny": true,
+      "noImplicitThis": true,
+      "strict": true,
+      "strictBindCallApply": true,
+      "strictFunctionTypes": true,
+      "strictNullChecks": true,
+      "strictPropertyInitialization": true,
+      "noFallthroughCasesInSwitch": true,
+      "forceConsistentCasingInFileNames": true,
+      "noImplicitReturns": true,
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "module": "commonjs",
+      "removeComments": true,
+      "preserveConstEnums": true,
+      "outDir": "./dist/bin",
+      "sourceMap": true,
+      "declaration": true,
+      "lib" : ["ESNext"]
+    },
+    "include": ["."],
+    "exclude": ["node_modules", "**/*.spec.ts"]
+  }
