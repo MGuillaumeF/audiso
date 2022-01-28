@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-let exitStatus = 0;
 const fs = require("fs").promises;
 const path = require("path");
 
@@ -26,6 +25,14 @@ type Audit = {
     };
 };
 
+type CliArgument = string
+            | boolean
+            | number;
+
+type CliArguments = string[]
+            | boolean[]
+            | number[];
+
 async function auditToSonar(params: Parameters) : Promise<void> {
     const npmSeverityToSonar = new Map([
         ["info", "INFO"],
@@ -41,8 +48,7 @@ async function auditToSonar(params: Parameters) : Promise<void> {
         auditJsonString = auditJsonString.toString();
     } catch (error) {
         console.error("input file read failed", error);
-        exitStatus = 3;
-        process.exit(3);
+        throw Error("input file read failed");
     }
 
     const audit = JSON.parse(auditJsonString) as Audit;
@@ -108,9 +114,8 @@ async function auditToSonar(params: Parameters) : Promise<void> {
         await fs.writeFile(params.outputFilePath, output);
     } catch (error) {
         console.error("output file write failed", error);
-        exitStatus = 2;
+        throw error;
     }
-    process.exit(exitStatus);
 }
 
 if (require.main === module) {
@@ -119,12 +124,8 @@ if (require.main === module) {
 
     const params: {
         [key: string]:
-            | string
-            | boolean
-            | number
-            | string[]
-            | boolean[]
-            | number[];
+            | CliArgument
+            | CliArguments
     } = {};
 
     const configuration = [
@@ -191,7 +192,7 @@ if (require.main === module) {
             console.error(
                 `${value.alias.join(", ")} required option is not defined`
             );
-            process.exit(1);
+            throw Error(`${value.alias.join(", ")} required option is not defined`);
         }
     });
     auditToSonar(params as Parameters);
