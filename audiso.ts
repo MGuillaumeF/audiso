@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 
-const fs = require("fs").promises;
-const path = require("path");
+const JSON_LEFT_SPACE = 4;
+
+const CLI_ARGUMENT_PADDING = 2;
+
+import {promises as fs} = import "fs";
+import path from "path";
 
 type Parameters = {
     inputFilePath: string;
@@ -108,7 +112,8 @@ async function auditToSonar(params: Parameters) : Promise<void> {
             },
         },
     });
-    const output = JSON.stringify({ issues }, null, 4);
+
+    const output = JSON.stringify({ issues }, null, JSON_LEFT_SPACE);
     console.debug("issues generated", output);
     try {
         await fs.writeFile(params.outputFilePath, output);
@@ -119,8 +124,9 @@ async function auditToSonar(params: Parameters) : Promise<void> {
 }
 
 if (require.main === module) {
+   
     // get arguments of process run
-    const args = process.argv.slice(2);
+    const args = process.argv.slice(CLI_ARGUMENT_PADDING);
 
     const params: {
         [key: string]:
