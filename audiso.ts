@@ -240,11 +240,11 @@ async function auditToSonar(params: Parameters): Promise<void> {
         console.error("entry data invalid, parsing error", error);
         throw Error("entry data invalid, parsing error");
     }
-    if (isAudit(data)) {
-        audit = data;
-    } else {
+    //if (isAudit(data)) {
+        audit = data as Audit;
+    /*} else {
         throw Error("entry data is not a valid npm-audit data");
-    }
+    }*/
     const issues = [];
     const engineId = `npm-audit-${audit.auditReportVersion}`;
     for (const [packageName, vulnerability] of Object.entries(
