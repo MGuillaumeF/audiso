@@ -1,0 +1,5 @@
+.whitesource
+*.spec.ts
+.github
+node_modules
+sonar-project.properties
