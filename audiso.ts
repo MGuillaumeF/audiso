@@ -73,8 +73,8 @@ function isAudit(data: any): data is Audit {
     result &&= typeof data?.auditReportVersion === "number";
     // check metadata field
     result &&=
-        typeof data?.metadata === "object" &&
-        Object.entries(data.metadata).every(([key, value]) => {
+        typeof data?.metadata?.vulnerabilities === "object" &&
+        Object.entries(data.metadata.vulnerabilities).every(([key, value]) => {
             return typeof key === "string" && typeof value === "number";
         });
 
@@ -226,7 +226,8 @@ async function auditToSonar(params: Parameters): Promise<void> {
 
     let auditJsonString = "";
     try {
-        auditJsonString = (await fs.readFile(params.inputFilePath)).toString();
+        const buffer = await fs.readFile(params.inputFilePath);
+        auditJsonString = buffer.toString();
     } catch (error) {
         console.error("input file read failed", error);
         throw Error("input file read failed");
@@ -240,24 +241,25 @@ async function auditToSonar(params: Parameters): Promise<void> {
         console.error("entry data invalid, parsing error", error);
         throw Error("entry data invalid, parsing error");
     }
-    //if (isAudit(data)) {
-        audit = data as Audit;
-    /*} else {
+    if (isAudit(data)) {
+        audit = data;
+    } else {
         throw Error("entry data is not a valid npm-audit data");
-    }*/
+    }
     const issues = [];
     const engineId = `npm-audit-${audit.auditReportVersion}`;
     for (const [packageName, vulnerability] of Object.entries(
         audit.vulnerabilities
     )) {
         if (vulnerability.isDirect) {
-            const packageJsonFile = (
-                await fs.readFile(params.packageFilePath)
-            ).toString();
+            const packageJsonFileBuffer = await fs.readFile(
+                params.packageFilePath
+            );
+            const packageJsonFile = packageJsonFileBuffer.toString();
             const packageNameIndex = packageJsonFile.indexOf(packageName);
             const rows = packageJsonFile.slice(0, packageNameIndex).split("\n");
             const startLine = rows.length;
-            const startColumn = rows.at(-1)?.length || 0;
+            const startColumn = rows.slice(-1).shift()?.length || 0;
             const endColumn = startColumn + packageName.length;
 
             let message = `The dependency ${packageName} has vulnerability`;
