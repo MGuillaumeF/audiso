@@ -4,3 +4,26 @@
 
 ## description 
 This module module convert npm-audit json report to sonarqube generic data issue report
+
+## how to use
+
+### generate npm-audit report (npm>=8)
+
+```
+npm install --save-dev audiso
+
+cd project
+npm audit --json > audit-dependency-report.json
+
+audiso --package-file=./package.json --input-file=./audit-dependency-report.json --output-file=audit-dependency-report-sonarqube.json
+```
+
+### update sonar-project.properties
+
+```
+# add package.json in sources index
+sonar.sources=.......,package.json
+
+# add sonarqube report
+sonar.externalIssuesReportPaths=audit-dependency-report-sonarqube.json
+```
