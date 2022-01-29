@@ -30,40 +30,6 @@ type Audit = {
     };
 };
 
-function isAudit(data: any): data is Audit {
-    let result = true;
-    // check auditReportVersion field
-    result &&= typeof data?.auditReportVersion === "number";
-    // check metadata field
-    result &&=
-        typeof data?.metadata === "object" &&
-        Object.entries(data.metadata).every(([key, value]) => {
-            return typeof key === "string" && typeof value === "number";
-        });
-
-    result &&=
-        typeof data?.vulnerabilities === "object" &&
-        Object.entries(data.vulnerabilities).every(([key, value]) => {
-            return typeof key === "string" && isVulnerability(value);
-        });
-
-    return result;
-}
-
-function isVulnerability(data: any): data is Vulnerability {
-    let result = true;
-    result &&=
-        data?.fixAvailable === "boolean" ||
-        [data?.fixAvailable?.name, data?.fixAvailable?.version].every(
-            (value) => typeof value === "string"
-        );
-    result &&= typeof data?.isDirect === "boolean";
-    result &&= ["info", "low", "moderate", "high", "critical"].includes(
-        data?.severity
-    );
-    return result;
-}
-
 type CliArgument = string | boolean | number;
 
 type CliArguments = string[] | boolean[] | number[];
@@ -93,6 +59,52 @@ function isParameters(data: any): data is Parameters {
             data?.packageFilePath,
         ].every((value) => typeof value === "string" && value.trim() !== "")
     );
+}
+
+/**
+ * Function to check if any data is a Audit
+ * @param data The data to check if is a valid Audit
+ * @returns boolean, type narrowing of Audit
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isAudit(data: any): data is Audit {
+    let result = true;
+    // check auditReportVersion field
+    result &&= typeof data?.auditReportVersion === "number";
+    // check metadata field
+    result &&=
+        typeof data?.metadata === "object" &&
+        Object.entries(data.metadata).every(([key, value]) => {
+            return typeof key === "string" && typeof value === "number";
+        });
+
+    result &&=
+        typeof data?.vulnerabilities === "object" &&
+        Object.entries(data.vulnerabilities).every(([key, value]) => {
+            return typeof key === "string" && isVulnerability(value);
+        });
+
+    return result;
+}
+
+/**
+ * Function to check if any data is a Vulnerability
+ * @param data The data to check if is a valid Vulnerability
+ * @returns boolean, type narrowing of Vulnerability
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isVulnerability(data: any): data is Vulnerability {
+    let result = true;
+    result &&=
+        data?.fixAvailable === "boolean" ||
+        [data?.fixAvailable?.name, data?.fixAvailable?.version].every(
+            (value) => typeof value === "string"
+        );
+    result &&= typeof data?.isDirect === "boolean";
+    result &&= ["info", "low", "moderate", "high", "critical"].includes(
+        data?.severity
+    );
+    return result;
 }
 
 /**
