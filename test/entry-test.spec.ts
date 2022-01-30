@@ -15,7 +15,7 @@ describe('entry test', () => {
 
     test('audit first example', async () => {
         const example1 = await fs.readFile(path.resolve(process.cwd(), './test/resources/audit-example-1.json'));
-        const example1Str = example.toString();
+        const example1Str = example1.toString();
         expect(isAudit(JSON.parse(example1Str))).toBeTrue();
     });
 });
