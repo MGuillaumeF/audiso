@@ -1,6 +1,6 @@
 import path from 'path';
 import { promises } from 'fs';
-import { readParameters } from '../src/audiso.ts';
+import { readParameters } from '../src/parameters/index.ts';
 const { fs } = promises; 
 
 // test configuration
