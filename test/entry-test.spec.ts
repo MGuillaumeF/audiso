@@ -14,7 +14,7 @@ describe('entry test', () => {
     });
 
     test('invalid audit report', async () => {
-        expect(isAudit({auditReportVersion :2,metadata: {}, vulnerabilities:{dependence:{isDirect:'invalidBool', fixAvailable:{}}}})).toBeFalsy();
+        expect(isAudit({auditReportVersion :2,metadata: {vulnerabilities : {unknown : 0}}, vulnerabilities:{dependence:{isDirect:'invalidBool', fixAvailable:{}}}})).toBeFalsy();
     });
 
     test('audit first example', async () => {
