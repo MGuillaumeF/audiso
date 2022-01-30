@@ -9,3 +9,5 @@ test
 .prettierrc
 .eslintrc.js
 babel.config.js
+dist/reports
+coverage
