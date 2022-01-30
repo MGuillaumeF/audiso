@@ -1,7 +1,6 @@
 import path from 'path';
 import { promises as fs } from 'fs';
 import audiso from '../src/audiso.ts';
-import { readParameters } from '../src/args/parameters/index.ts';
 
 // test output
 describe('output test', () => {
