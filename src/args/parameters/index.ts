@@ -1,5 +1,5 @@
-import { ConfigurationItem } from './core/types.ts';
-import { argsToConfiguration } from './core/index.ts';
+import { ConfigurationItem } from './core/types';
+import { argsToConfiguration } from './core/index';
 
 export type Parameters = {
     inputFilePath: string;
