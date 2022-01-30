@@ -10,12 +10,12 @@ describe('entry test', () => {
     test('empty audit report', async () => {
         expect(isAudit({})).toBeFalse();
         expect(isAudit(null)).toBeFalse();
-        expect(isAudit(undefined)).toBeFalse();
+        expect(isAudit(undefined)).toBeFalsthy();
     });
 
     test('audit first example', async () => {
         const example1 = await fs.readFile(path.resolve(process.cwd(), './test/resources/audit-example-1.json'));
         const example1Str = example1.toString();
-        expect(isAudit(JSON.parse(example1Str))).toBeTrue();
+        expect(isAudit(JSON.parse(example1Str))).toBeTruthy();
     });
 });
