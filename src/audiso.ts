@@ -39,7 +39,11 @@ export function isAudit(data: any): data is Audit {
     result &&=
         typeof data?.metadata?.vulnerabilities === "object" &&
         Object.entries(data.metadata.vulnerabilities).every(([key, value]) => {
-            return typeof key === "string" && typeof value === "number";
+            const isValid = typeof key === "string" && typeof value === "number";
+            if (!isValid) {
+                console.error(`Invalid metadata ${key}, name of metadata is typeof ${typeof key}, value is ${value} of type ${typeof value}`);
+            }
+            return isValid;
         });
 
     result &&=
@@ -48,7 +52,7 @@ export function isAudit(data: any): data is Audit {
             const isVulnerabilityCheck = isVulnerability(value);
             const isValid = typeof key === "string" && isVulnerabilityCheck;
             if (!isValid) {
-                console.error(`Invalid vulnerability ${key}, name of vulnerability is typeof ${typeof key}, vulnerability check result ${isVulnerabilityCheck}`;
+                console.error(`Invalid vulnerability ${key}, name of vulnerability is typeof ${typeof key}, vulnerability check result ${isVulnerabilityCheck}`);
             }
             return isValid;
         });
