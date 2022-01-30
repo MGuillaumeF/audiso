@@ -62,7 +62,6 @@ const configuration: ConfigurationItem[] = [
  * @returns The parameters object found (or null if parameter object is invalid)
  */
 export function readParameters(args: string[]): Parameters | null {
-    
     const params = argsToConfiguration(configuration, args);
 
     configuration.forEach((value: ConfigurationItem) => {
