@@ -3,14 +3,10 @@
 import { promises as fs } from "fs";
 import path from "path";
 
+import { readParameters } from './args/parameters/index.ts';
+
 const JSON_LEFT_SPACE = 4;
 const CLI_ARGUMENT_PADDING = 2;
-
-type Parameters = {
-    inputFilePath: string;
-    outputFilePath: string;
-    packageFilePath: string;
-};
 
 type Vulnerability = {
     fixAvailable: { name: string; version: string } | false;
@@ -29,37 +25,6 @@ type Audit = {
         [key: string]: Vulnerability;
     };
 };
-
-type CliArgument = string | boolean | number;
-
-type CliArguments = string[] | boolean[] | number[];
-
-type ConfigurationItem = {
-    alias: string[];
-    description: string;
-    key: string;
-    quantity: number;
-    required: boolean;
-    type: "string" | "number" | "boolean";
-    value: CliArgument | CliArguments;
-};
-
-/**
- * Function to check if any data is a Parameters
- * @param data The data to check if is a valid Parameters
- * @returns boolean, type narrowing of Parameters
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function isParameters(data: any): data is Parameters {
-    return (
-        typeof data === "object" &&
-        [
-            data?.inputFilePath,
-            data?.outputFilePath,
-            data?.packageFilePath,
-        ].every((value) => typeof value === "string" && value.trim() !== "")
-    );
-}
 
 /**
  * Function to check if any data is a Audit
@@ -105,109 +70,6 @@ function isVulnerability(data: any): data is Vulnerability {
         data?.severity
     );
     return result;
-}
-
-/**
- * Function to extract options of cli command
- * @param configuration The configuration of options available
- * @param args arguments of cli
- * @returns Cli parameter object [key, value] fore each option
- */
-export function argsToConfiguration(
-    configuration: ConfigurationItem[],
-    args: string[]
-): {
-    [key: string]: CliArgument | CliArguments;
-} {
-    // create empty parameters scope
-    const params: {
-        [key: string]: CliArgument | CliArguments;
-    } = {};
-
-    configuration.forEach((value: ConfigurationItem) => {
-        const newValue = args.find((arg) => {
-            return value.alias
-                .map((reg) => RegExp(`${reg}=\\S+`))
-                .some((regTest) => regTest.test(arg));
-        });
-        if (newValue) {
-            value.value = newValue.split("=")[1];
-        } else {
-            const optionIndex = args.findIndex((arg) => {
-                return value.alias.some((regTest) => regTest === arg);
-            });
-            if (optionIndex !== -1) {
-                value.value =
-                    value.quantity === 1
-                        ? args[optionIndex + 1]
-                        : args.slice(
-                              optionIndex + 1,
-                              optionIndex + value.quantity
-                          );
-            }
-        }
-
-        if (value.required && value.value === undefined) {
-            console.error(
-                `${value.alias.join(", ")} required option is not defined`
-            );
-            throw Error(
-                `${value.alias.join(", ")} required option is not defined`
-            );
-        }
-    });
-    return params;
-}
-
-/**
- * Function to read parameters of cli
- * @param args Cli arguments array
- * @returns The parameters object found (or null if parameter object is invalid)
- */
-export function readParameters(args: string[]): Parameters | null {
-    // add configuration definition
-    const configuration: ConfigurationItem[] = [
-        {
-            key: "packageFilePath",
-            alias: ["-p", "--package-file"],
-            type: "string",
-            quantity: 1,
-            required: false,
-            description: "",
-            value: "package.json",
-        },
-        {
-            key: "outputFilePath",
-            alias: ["-o", "--output-file"],
-            type: "string",
-            quantity: 1,
-            required: false,
-            description: "",
-            value: "audit-dependency-report-sonarqube.json",
-        },
-        {
-            key: "inputFilePath",
-            alias: ["-i", "--input-file"],
-            type: "string",
-            quantity: 1,
-            required: false,
-            description: "",
-            value: "audit-dependency-report.json",
-        },
-    ];
-
-    const params = argsToConfiguration(configuration, args);
-
-    configuration.forEach((value: ConfigurationItem) => {
-        params[value.key] =
-            ["inputFilePath", "outputFilePath", "packageFilePath"].includes(
-                value.key
-            ) && typeof value.value === "string"
-                ? path.resolve(process.cwd(), value.value)
-                : value.value;
-    });
-
-    return isParameters(params) ? params : null;
 }
 
 /**
