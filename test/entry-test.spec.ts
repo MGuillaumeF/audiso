@@ -8,9 +8,9 @@ describe('entry test', () => {
     console.log('entry test');
 
     test('empty audit report', async () => {
-        expect(isAudit({})).toBeFalsthy();
-        expect(isAudit(null)).toBeFalsthy();
-        expect(isAudit(undefined)).toBeFalsthy();
+        expect(isAudit({})).toBeFalsy();
+        expect(isAudit(null)).toBeFalsy();
+        expect(isAudit(undefined)).toBeFalsy();
     });
 
     test('audit first example', async () => {
