@@ -3,7 +3,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 
-import { readParameters } from './args/parameters/index.ts';
+import { readParameters } from './args/parameters/index';
 
 const JSON_LEFT_SPACE = 4;
 const CLI_ARGUMENT_PADDING = 2;
