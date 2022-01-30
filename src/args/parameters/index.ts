@@ -1,10 +1,28 @@
 import { ConfigurationItem } from './core/types.ts';
+import { argsToConfiguration } from './core/index.ts';
 
 export type Parameters = {
     inputFilePath: string;
     outputFilePath: string;
     packageFilePath: string;
 };
+
+/**
+ * Function to check if any data is a Parameters
+ * @param data The data to check if is a valid Parameters
+ * @returns boolean, type narrowing of Parameters
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function isParameters(data: any): data is Parameters {
+    return (
+        typeof data === "object" &&
+        [
+            data?.inputFilePath,
+            data?.outputFilePath,
+            data?.packageFilePath,
+        ].every((value) => typeof value === "string" && value.trim() !== "")
+    );
+}
 
 // add configuration definition
 const configuration: ConfigurationItem[] = [
