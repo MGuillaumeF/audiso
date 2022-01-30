@@ -57,6 +57,12 @@ jobs:
         name: AudiSo-Analyses-report
         path: ${{github.workspace}}/dist/reports
 
+    - name: Coverage reports
+      uses: actions/upload-artifact@v2
+      with:
+        name: Coverage-report
+        path: ${{github.workspace}}/coverage
+
     - name: Setup sonarqube
       if: github.actor != 'dependabot[bot]'
       uses: warchant/setup-sonar-scanner@v3
