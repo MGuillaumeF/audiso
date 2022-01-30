@@ -3,7 +3,9 @@
 .github
 node_modules
 sonar-project.properties
+src
 test
 .gitignore
 .prettierrc
 .eslintrc.js
+babel.config.js
