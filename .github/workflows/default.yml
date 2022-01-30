@@ -31,9 +31,9 @@ jobs:
       working-directory: ${{github.workspace}}
       run: npm run build
 
-    # - name: Tests
-    #   working-directory: ${{github.workspace}}
-    #   run: npm test
+    - name: Tests
+      working-directory: ${{github.workspace}}
+      run: npm test
 
     - name: ESlint analyze json
       working-directory: ${{github.workspace}}
