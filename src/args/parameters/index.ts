@@ -13,7 +13,7 @@ export type Parameters = {
  * @param data The data to check if is a valid Parameters
  * @returns boolean, type narrowing of Parameters
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
 export function isParameters(data: any): data is Parameters {
     return (
         typeof data === "object" &&
