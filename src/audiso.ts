@@ -78,7 +78,7 @@ function isVulnerability(data: any): data is Vulnerability {
         data?.severity
     );
     if (!result) {
-        console.error(`is not a valid vulnerability object, data fixAvailable '${data?.fixAvailable}', is direct ${data?.isDirect}, severity ${data?.severity}`);
+        console.error(`is not a valid vulnerability object, data fixAvailable of ${data?.fixAvailable}, is direct ${data?.isDirect}, severity ${data?.severity}`);
     }
     return result;
 }
