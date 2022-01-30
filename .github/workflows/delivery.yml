@@ -1,13 +1,8 @@
-name: AUDISO - DEFAULT
+name: AUDISO - DELIVERY
 
 on:
   push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: 
-      - main
-      - develop
-      - delivery
+    branches: [ delivery ]
 
 env:
   SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
@@ -65,11 +60,9 @@ jobs:
         path: ${{github.workspace}}/coverage
 
     - name: Setup sonarqube
-      if: github.actor != 'dependabot[bot]'
       uses: warchant/setup-sonar-scanner@v3
 
     - name: Run SonarQube
-      if: github.actor != 'dependabot[bot]'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: sonar-scanner
@@ -78,26 +71,14 @@ jobs:
         -Dsonar.verbose=false
 
     - name: SonarQube Quality Gate check
-      if: github.actor != 'dependabot[bot]'
       uses: sonarsource/sonarqube-quality-gate-action@master
       # Force to fail step after specific time
       timeout-minutes: 5
       env:
        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
- dependabot:
-    needs: [sonarcloud-analyse]
-    runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
-    steps:
-      - name: Dependabot metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@v1.1.1
-        with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
+    - name: NPM Publish
+      uses: JS-DevTools/npm-publish@v1
+      with:
+        token: ${{ secrets.NPM_TOKEN }}
 
-      - name: Enable auto-merge for Dependabot PRs 
-        run: gh pr merge --delete-branch --auto --squash "$PR_URL"
-        env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
