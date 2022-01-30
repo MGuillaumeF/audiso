@@ -1,16 +1,11 @@
 #!/usr/bin/env node
 
 import { promises as fs } from "fs";
-import path from "path";
+
+import { readParameters, Parameters } from './args/parameters/index';
 
 const JSON_LEFT_SPACE = 4;
 const CLI_ARGUMENT_PADDING = 2;
-
-type Parameters = {
-    inputFilePath: string;
-    outputFilePath: string;
-    packageFilePath: string;
-};
 
 type Vulnerability = {
     fixAvailable: { name: string; version: string } | false;
@@ -30,44 +25,13 @@ type Audit = {
     };
 };
 
-type CliArgument = string | boolean | number;
-
-type CliArguments = string[] | boolean[] | number[];
-
-type ConfigurationItem = {
-    alias: string[];
-    description: string;
-    key: string;
-    quantity: number;
-    required: boolean;
-    type: "string" | "number" | "boolean";
-    value: CliArgument | CliArguments;
-};
-
-/**
- * Function to check if any data is a Parameters
- * @param data The data to check if is a valid Parameters
- * @returns boolean, type narrowing of Parameters
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function isParameters(data: any): data is Parameters {
-    return (
-        typeof data === "object" &&
-        [
-            data?.inputFilePath,
-            data?.outputFilePath,
-            data?.packageFilePath,
-        ].every((value) => typeof value === "string" && value.trim() !== "")
-    );
-}
-
 /**
  * Function to check if any data is a Audit
  * @param data The data to check if is a valid Audit
  * @returns boolean, type narrowing of Audit
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function isAudit(data: any): data is Audit {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+export function isAudit(data: any): data is Audit {
     let result = true;
     // check auditReportVersion field
     result &&= typeof data?.auditReportVersion === "number";
@@ -75,13 +39,22 @@ function isAudit(data: any): data is Audit {
     result &&=
         typeof data?.metadata?.vulnerabilities === "object" &&
         Object.entries(data.metadata.vulnerabilities).every(([key, value]) => {
-            return typeof key === "string" && typeof value === "number";
+            const isValid = typeof key === "string" && typeof value === "number";
+            if (!isValid) {
+                console.error(`Invalid metadata ${key}, name of metadata is typeof ${typeof key}, value is ${value} of type ${typeof value}`);
+            }
+            return isValid;
         });
 
     result &&=
         typeof data?.vulnerabilities === "object" &&
         Object.entries(data.vulnerabilities).every(([key, value]) => {
-            return typeof key === "string" && isVulnerability(value);
+            const isVulnerabilityCheck = isVulnerability(value);
+            const isValid = typeof key === "string" && isVulnerabilityCheck;
+            if (!isValid) {
+                console.error(`Invalid vulnerability ${key}, name of vulnerability is typeof ${typeof key}, vulnerability check result ${isVulnerabilityCheck}`);
+            }
+            return isValid;
         });
 
     return result;
@@ -92,11 +65,10 @@ function isAudit(data: any): data is Audit {
  * @param data The data to check if is a valid Vulnerability
  * @returns boolean, type narrowing of Vulnerability
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
 function isVulnerability(data: any): data is Vulnerability {
     let result = true;
-    result &&=
-        data?.fixAvailable === "boolean" ||
+    result &&= typeof data?.fixAvailable === "boolean" ||
         [data?.fixAvailable?.name, data?.fixAvailable?.version].every(
             (value) => typeof value === "string"
         );
@@ -104,110 +76,10 @@ function isVulnerability(data: any): data is Vulnerability {
     result &&= ["info", "low", "moderate", "high", "critical"].includes(
         data?.severity
     );
+    if (!result) {
+        console.error(`is not a valid vulnerability object, data fixAvailable of ${data?.fixAvailable}, is direct ${data?.isDirect}, severity ${data?.severity}`);
+    }
     return result;
-}
-
-/**
- * Function to extract options of cli command
- * @param configuration The configuration of options available
- * @param args arguments of cli
- * @returns Cli parameter object [key, value] fore each option
- */
-function argsToConfiguration(
-    configuration: ConfigurationItem[],
-    args: string[]
-): {
-    [key: string]: CliArgument | CliArguments;
-} {
-    // create empty parameters scope
-    const params: {
-        [key: string]: CliArgument | CliArguments;
-    } = {};
-
-    configuration.forEach((value: ConfigurationItem) => {
-        const newValue = args.find((arg) => {
-            return value.alias
-                .map((reg) => RegExp(`${reg}=\\S+`))
-                .some((regTest) => regTest.test(arg));
-        });
-        if (newValue) {
-            value.value = newValue.split("=")[1];
-        } else {
-            const optionIndex = args.findIndex((arg) => {
-                return value.alias.some((regTest) => regTest === arg);
-            });
-            if (optionIndex !== -1) {
-                value.value =
-                    value.quantity === 1
-                        ? args[optionIndex + 1]
-                        : args.slice(
-                              optionIndex + 1,
-                              optionIndex + value.quantity
-                          );
-            }
-        }
-
-        if (value.required && value.value === undefined) {
-            console.error(
-                `${value.alias.join(", ")} required option is not defined`
-            );
-            throw Error(
-                `${value.alias.join(", ")} required option is not defined`
-            );
-        }
-    });
-    return params;
-}
-
-/**
- * Function to read parameters of cli
- * @param args Cli arguments array
- * @returns The parameters object found (or null if parameter object is invalid)
- */
-function readParameters(args: string[]): Parameters | null {
-    // add configuration definition
-    const configuration: ConfigurationItem[] = [
-        {
-            key: "packageFilePath",
-            alias: ["-p", "--package-file"],
-            type: "string",
-            quantity: 1,
-            required: false,
-            description: "",
-            value: "package.json",
-        },
-        {
-            key: "outputFilePath",
-            alias: ["-o", "--output-file"],
-            type: "string",
-            quantity: 1,
-            required: false,
-            description: "",
-            value: "audit-dependency-report-sonarqube.json",
-        },
-        {
-            key: "inputFilePath",
-            alias: ["-i", "--input-file"],
-            type: "string",
-            quantity: 1,
-            required: false,
-            description: "",
-            value: "audit-dependency-report.json",
-        },
-    ];
-
-    const params = argsToConfiguration(configuration, args);
-
-    configuration.forEach((value: ConfigurationItem) => {
-        params[value.key] =
-            ["inputFilePath", "outputFilePath", "packageFilePath"].includes(
-                value.key
-            ) && typeof value.value === "string"
-                ? path.resolve(process.cwd(), value.value)
-                : value.value;
-    });
-
-    return isParameters(params) ? params : null;
 }
 
 /**

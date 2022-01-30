@@ -1,6 +1,6 @@
 {
   "name": "@mguillaumef/audiso",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "This module module convert npm-audit json report to sonarqube generic data issue report.",
   "main": "index.js",
   "bin": {
@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc --project .",
     "postbuild": "npm uninstall -g . && npm install -g .",
-    "test": "jest test",
+    "test": "jest test --coverage",
     "prettier": "prettier --write . --ignore-path ./.gitignore",
     "lint:eslint": "eslint . --fix --format html --output-file ./dist/reports/lint/eslint-report.html --ignore-path ./.gitignore",
     "lint:eslint:json": "eslint . --fix --format json --output-file ./dist/reports/lint/eslint-report.json --ignore-path ./.gitignore"
@@ -30,6 +30,8 @@
   },
   "homepage": "https://github.com/MGuillaumeF/audiso#readme",
   "devDependencies": {
+    "@babel/preset-typescript": "^7.16.7",
+    "@babel/preset-env": "^7.16.11",
     "@types/jest": "^26.0.20",
     "@types/node": "^17.0.13",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
