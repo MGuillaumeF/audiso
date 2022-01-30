@@ -7,7 +7,7 @@ const cmd = util.promisify(exec);
 
 async function audisoCmd(args : string[]) {
   try {
-    const { stdout, stderr } = await cmd('audiso', args);
+    const { stdout, stderr } = await cmd(['audiso', ...args].join(' '));
     console.log('stdout:', stdout);
     console.log('stderr:', stderr);
   } catch (e) {
