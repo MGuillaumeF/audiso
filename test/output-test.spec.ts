@@ -10,7 +10,7 @@ describe('output test', () => {
 
     test('audit first example output', async () => {
         await audiso.auditToSonar({
-            inputFile: path.resolve(process.cwd(), 'test/resources/audit-example-1.json'),
+            inputFilePath: path.resolve(process.cwd(), 'test/resources/audit-example-1.json'),
             outputFilePath: path.resolve(process.cwd(), 'test/resources/audit-example-output-1.json'),
             packageFilePath: path.resolve(process.cwd(), 'test/resources/package-example-1.json')
         });
