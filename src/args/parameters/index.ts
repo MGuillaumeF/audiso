@@ -1,3 +1,4 @@
+import path from "path";
 import { ConfigurationItem } from '../core/types';
 import { argsToConfiguration } from '../core/index';
 
