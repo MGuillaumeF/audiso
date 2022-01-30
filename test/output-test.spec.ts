@@ -33,7 +33,7 @@ describe('output test', () => {
         expect(report?.issues?.length).toBe(3);
     });
 
-    test('audit first example output', async () => {
+    test('audit first example output by cli', async () => {
          await audisoCmd(['--input-file=test/resources/audit-example-1.json', '--output-file=test/resources/audit-example-output-2.json', '--package-file=test/resources/package-example-1.json']);
 
          const reportBuffer = await fs.readFile(path.resolve(process.cwd(), 'test/resources/audit-example-output-2.json'));
