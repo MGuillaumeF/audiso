@@ -1,7 +1,5 @@
 import path from 'path';
-import { promises } from 'fs';
 import { readParameters } from '../src/args/parameters/index.ts';
-const { fs } = promises; 
 
 // test configuration
 describe('configuration test', () => {
