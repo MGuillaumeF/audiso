@@ -113,7 +113,7 @@ function isVulnerability(data: any): data is Vulnerability {
  * @param args arguments of cli
  * @returns Cli parameter object [key, value] fore each option
  */
-function argsToConfiguration(
+export function argsToConfiguration(
     configuration: ConfigurationItem[],
     args: string[]
 ): {
@@ -164,7 +164,7 @@ function argsToConfiguration(
  * @param args Cli arguments array
  * @returns The parameters object found (or null if parameter object is invalid)
  */
-function readParameters(args: string[]): Parameters | null {
+export function readParameters(args: string[]): Parameters | null {
     // add configuration definition
     const configuration: ConfigurationItem[] = [
         {
