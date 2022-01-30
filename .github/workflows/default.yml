@@ -2,10 +2,11 @@ name: AUDISO - DEFAULT
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
   pull_request:
     branches: 
       - main
+      - develop
 
 env:
   SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
