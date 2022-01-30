@@ -13,6 +13,10 @@ describe('entry test', () => {
         expect(isAudit(undefined)).toBeFalsy();
     });
 
+    test('invalid audit report', async () => {
+        expect(isAudit({auditReportVersion :2,metadata: {}, vulnerabilities:{dependence:{isDirect:'invalidBool', fixAvailable:{}}}})).toBeFalsy();
+    });
+
     test('audit first example', async () => {
         const example1 = await fs.readFile(path.resolve(process.cwd(), './test/resources/audit-example-1.json'));
         const example1Str = example1.toString();
