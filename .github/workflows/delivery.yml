@@ -78,7 +78,7 @@ jobs:
        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     - name: NPM Login
-      run: echo -e '${{ secrets.NPM_USERNAME }}\n${{ secrets.NPM_PASSWORD }}\n${{ secrets.NPM_EMAIL }}' | npm login
+      run: echo -e '${{ secrets.NPM_USERNAME }}\n${{ secrets.NPM_PASSWORD }}\n${{ secrets.NPM_EMAIL }}' | npm login  -e EMAIL -r REGISTRY
 
     - name: NPM Publish
       run: npm publish --access public
