@@ -1,6 +1,6 @@
 {
   "name": "@mguillaumef/audiso",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "This module module convert npm-audit json report to sonarqube generic data issue report.",
   "main": "index.js",
   "bin": {
