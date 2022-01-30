@@ -1,7 +1,6 @@
 import path from 'path';
 import { isAudit } from '../src/audiso.ts';
-import { promises } from 'fs';
-const { fs } = promises;
+import { promises as fs } from 'fs';
 
 // test configuration
 describe('entry test', () => {
