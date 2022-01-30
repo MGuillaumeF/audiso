@@ -30,7 +30,7 @@ type Audit = {
  * @param data The data to check if is a valid Audit
  * @returns boolean, type narrowing of Audit
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
 export function isAudit(data: any): data is Audit {
     let result = true;
     // check auditReportVersion field
@@ -65,7 +65,7 @@ export function isAudit(data: any): data is Audit {
  * @param data The data to check if is a valid Vulnerability
  * @returns boolean, type narrowing of Vulnerability
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
 function isVulnerability(data: any): data is Vulnerability {
     let result = true;
     result &&= typeof data?.fixAvailable === "boolean" ||
