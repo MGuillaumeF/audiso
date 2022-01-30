@@ -3,3 +3,7 @@
 .github
 node_modules
 sonar-project.properties
+test
+.gitignore
+.prettierrc
+.eslintrc.js
