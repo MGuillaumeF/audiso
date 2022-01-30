@@ -78,7 +78,7 @@ jobs:
        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     - name: NPM Publish
-    - uses: JS-DevTools/npm-publish@v1
+      uses: JS-DevTools/npm-publish@v1
       with:
         token: ${{ secrets.NPM_TOKEN }}
 
