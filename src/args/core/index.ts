@@ -1,4 +1,4 @@
-import { CliArgument, CliArguments, ConfigurationItem } from './types.ts';
+import { CliArgument, CliArguments, ConfigurationItem } from './types';
 
 /**
  * Function to extract options of cli command
