@@ -31,7 +31,7 @@ type Audit = {
  * @returns boolean, type narrowing of Audit
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function isAudit(data: any): data is Audit {
+export function isAudit(data: any): data is Audit {
     let result = true;
     // check auditReportVersion field
     result &&= typeof data?.auditReportVersion === "number";
@@ -45,7 +45,12 @@ function isAudit(data: any): data is Audit {
     result &&=
         typeof data?.vulnerabilities === "object" &&
         Object.entries(data.vulnerabilities).every(([key, value]) => {
-            return typeof key === "string" && isVulnerability(value);
+            const isVulnerabilityCheck = isVulnerability(value);
+            const isValid = typeof key === "string" && isVulnerabilityCheck;
+            if (!isValid) {
+                console.error(`Invalid vulnerability ${key}, name of vulnerability is typeof ${typeof key}, vulnerability check result ${isVulnerabilityCheck}`;
+            }
+            return isValid;
         });
 
     return result;
