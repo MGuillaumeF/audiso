@@ -77,9 +77,8 @@ jobs:
       env:
        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-    - name: NPM Login
-      run: echo -e '${{ secrets.NPM_USERNAME }}\n${{ secrets.NPM_PASSWORD }}\n${{ secrets.NPM_EMAIL }}' | npm login  -e EMAIL -r REGISTRY
-
     - name: NPM Publish
-      run: npm publish --access public
+    - uses: JS-DevTools/npm-publish@v1
+      with:
+        token: ${{ secrets.NPM_TOKEN }}
 
