@@ -18,6 +18,6 @@ describe('output test', () => {
         const report = JSON.parse(reportBuffer.toString());
         
         expect(Array.isArray(report?.issues)).toBeTruthy();
-        expect(report?.issues?.length).toBe(2);
+        expect(report?.issues?.length).toBe(3);
     });
 });
