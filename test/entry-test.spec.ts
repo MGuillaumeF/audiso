@@ -8,8 +8,8 @@ describe('entry test', () => {
     console.log('entry test');
 
     test('empty audit report', async () => {
-        expect(isAudit({})).toBeFalse();
-        expect(isAudit(null)).toBeFalse();
+        expect(isAudit({})).toBeFalsthy();
+        expect(isAudit(null)).toBeFalsthy();
         expect(isAudit(undefined)).toBeFalsthy();
     });
 
