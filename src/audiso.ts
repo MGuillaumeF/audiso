@@ -68,8 +68,7 @@ export function isAudit(data: any): data is Audit {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isVulnerability(data: any): data is Vulnerability {
     let result = true;
-    result &&=
-        data?.fixAvailable === "boolean" ||
+    result &&= typeof data?.fixAvailable === "boolean" ||
         [data?.fixAvailable?.name, data?.fixAvailable?.version].every(
             (value) => typeof value === "string"
         );
