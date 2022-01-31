@@ -1,5 +1,9 @@
 import { CliArgument, CliArguments, ConfigurationItem } from './types';
 
+export function displayHelper(configuration : ConfigurationItem[]) {
+    console.info(configuration.map(item => `${item.required ? item.alias.join(', ') : item.alias.map(aliasItem => `[${aliasItem}]`).join(', ')} ${item.quantity} ${item.type} ${item.description}`));
+}
+
 /**
  * Function to extract options of cli command
  * @param configuration The configuration of options available
@@ -12,6 +16,10 @@ export function argsToConfiguration (
 ): {
     [key: string]: CliArgument | CliArguments;
 } {
+    if (['-h', '--help'].some(helpOption => args.includes(helpOption)) {
+        displayHelper(configuration);
+        process.exit(0);
+    }
     // create empty parameters scope
     const params: {
         [key: string]: CliArgument | CliArguments;
