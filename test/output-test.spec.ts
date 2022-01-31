@@ -34,15 +34,11 @@ describe('output test', () => {
     });
 
     test('unknown example output', async () => {
-        const testFunction = async () => {
-            await audiso.auditToSonar({
-                inputFilePath: path.resolve(process.cwd(), 'test/resources/unknown-example.json'),
-                outputFilePath: path.resolve(process.cwd(), 'test/resources/unknown-example-output.json'),
-                packageFilePath: path.resolve(process.cwd(), 'test/resources/package-unknown-example.json')
-            });
-        };
-        
-        expect(testFunction).toThrow('input file read failed');
+        await expect(audiso.auditToSonar({
+            inputFilePath: path.resolve(process.cwd(), 'test/resources/unknown-example.json'),
+            outputFilePath: path.resolve(process.cwd(), 'test/resources/unknown-example-output.json'),
+            packageFilePath: path.resolve(process.cwd(), 'test/resources/package-unknown-example.json')
+        })).rejects.toThrow('input file read failed');
     });
 
     test('audit first example output by cli', async () => {
