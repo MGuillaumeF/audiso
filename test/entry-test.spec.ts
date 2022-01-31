@@ -52,7 +52,7 @@ describe('entry test', () => {
                 description: "",
                 value: "audit-dependency-report.json",
             }
-        ]));
+        ]);
        
         expect(configuration).toBe('[-p], [--package-file]                     1  string  ');
     });
