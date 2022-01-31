@@ -1,7 +1,14 @@
 import { CliArgument, CliArguments, ConfigurationItem } from './types';
 
 export function displayHelper(configuration : ConfigurationItem[]) {
-    console.info(configuration.map(item => `${item.required ? item.alias.join(', ') : item.alias.map(aliasItem => `[${aliasItem}]`).join(', ')} ${item.quantity} ${item.type} ${item.description}`));
+    const aliasesMaxLength = 50;
+    const quantityMaxLength = 3;
+    const typeMaxLength = 8;
+    const helperText = configuration.map(item => {
+        const aliasDisplay = (item.required ? item.alias : item.alias.map(aliasItem => `[${aliasItem}]`)).join(', ');
+        return `${aliasDisplay.padEnd(aliasesMaxLength, ' ')} ${String(item.quantity).padEnd(quantityMaxLength, ' ')} ${item.type.padEnd(typeMaxLength, ' ')} ${item.description}`
+    }).join('\n');
+    console.info(helperText);
 }
 
 /**
