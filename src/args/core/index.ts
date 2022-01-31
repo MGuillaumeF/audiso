@@ -1,5 +1,6 @@
 import { CliArgument, CliArguments, ConfigurationItem } from './types';
-/** 
+
+/**
  * Function to build help message of cli command
  * @param configuration The configuration object
  * @returns The help message
@@ -8,11 +9,10 @@ export function getHelper(configuration : ConfigurationItem[]) : string {
     const aliasesMaxLength = 40;
     const quantityMaxLength = 3;
     const typeMaxLength = 8;
-    const helperText = configuration.map(item => {
+    return configuration.map(item => {
         const aliasDisplay = (item.required ? item.alias : item.alias.map(aliasItem => `[${aliasItem}]`)).join(', ');
         return `${aliasDisplay.padEnd(aliasesMaxLength, ' ')} ${String(item.quantity).padEnd(quantityMaxLength, ' ')} ${item.type.padEnd(typeMaxLength, ' ')} ${item.description}`
     }).join('\n');
-    return helperText;
 }
 
 /**
