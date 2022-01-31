@@ -1,6 +1,6 @@
 import path from 'path';
 import { isAudit } from '../src/audiso.ts';
-import { getHelper } from '../src/parameters/index.ts';
+import { getHelper } from '../src/args/parameters/index.ts';
 import { promises as fs } from 'fs';
 
 // test configuration
