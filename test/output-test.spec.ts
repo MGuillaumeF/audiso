@@ -39,6 +39,18 @@ describe('output test', () => {
             outputFilePath: path.resolve(process.cwd(), 'test/resources/unknown-example-output.json'),
             packageFilePath: path.resolve(process.cwd(), 'test/resources/package-unknown-example.json')
         })).rejects.toThrow('input file read failed');
+
+        await expect(audiso.auditToSonar({
+            inputFilePath: path.resolve(process.cwd(), 'test/resources/invalid-audit-report.txt'),
+            outputFilePath: path.resolve(process.cwd(), 'test/resources/unknown-example-output.json'),
+            packageFilePath: path.resolve(process.cwd(), 'test/resources/package-unknown-example.json')
+        })).rejects.toThrow('entry data invalid, parsing error');
+
+        await expect(audiso.auditToSonar({
+            inputFilePath: path.resolve(process.cwd(), 'test/resources/audit-example-1.json'),
+            outputFilePath: path.resolve(process.cwd(), 'test/resources'),
+            packageFilePath: path.resolve(process.cwd(), 'test/resources/package-example-1.json')
+        }).rejects.toThrow(Error);
     });
 
     test('audit first example output by cli', async () => {
