@@ -16,7 +16,7 @@ export function argsToConfiguration (
 ): {
     [key: string]: CliArgument | CliArguments;
 } {
-    if (['-h', '--help'].some(helpOption => args.includes(helpOption)) {
+    if (['-h', '--help'].some(helpOption => args.includes(helpOption))) {
         displayHelper(configuration);
         process.exit(0);
     }
