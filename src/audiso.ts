@@ -131,7 +131,7 @@ async function auditToSonar(params: Parameters): Promise<void> {
             const packageNameIndex = packageJsonFile.indexOf(packageName);
             const rows = packageJsonFile.slice(0, packageNameIndex).split("\n");
             const startLine = rows.length;
-            const startColumn = rows.slice(-1).shift()?.length || 0;
+            const startColumn = rows.slice(-1).shift()?.length;
             const endColumn = startColumn + packageName.length;
 
             let message = `The dependency ${packageName} has vulnerability`;
