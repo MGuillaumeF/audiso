@@ -6,7 +6,7 @@ import { CliArgument, CliArguments, ConfigurationItem } from './types';
  * @returns The help message
  */
 export function getHelper(configuration : ConfigurationItem[]) : string {
-    const aliasesMaxLength = 40;
+    const aliasesMaxLength = 30;
     const quantityMaxLength = 3;
     const typeMaxLength = 8;
     return configuration.map(item => {
