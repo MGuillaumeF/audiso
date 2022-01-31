@@ -184,7 +184,7 @@ async function auditToSonar(params: Parameters): Promise<void> {
         await fs.writeFile(params.outputFilePath, output);
     } catch (error) {
         console.error("output file write failed", error);
-        throw error;
+        throw Error('output error, report not writed');
     }
 }
 
