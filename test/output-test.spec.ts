@@ -33,10 +33,22 @@ describe('output test', () => {
         expect(report?.issues?.length).toBe(3);
     });
 
-    test('audit first example output by cli', async () => {
-         await audisoCmd(['--input-file=test/resources/audit-example-1.json', '--output-file=test/resources/audit-example-output-2.json', '--package-file=test/resources/package-example-1.json']);
+    test('unknown example output', async () => {
+        const testFunction = async () => {
+            await audiso.auditToSonar({
+                inputFilePath: path.resolve(process.cwd(), 'test/resources/unknown-example.json'),
+                outputFilePath: path.resolve(process.cwd(), 'test/resources/unknown-example-output.json'),
+                packageFilePath: path.resolve(process.cwd(), 'test/resources/package-unknown-example.json')
+            });
+        };
+        
+        expect(testFunction).toThrow('input file read failed');
+    });
 
-         const reportBuffer = await fs.readFile(path.resolve(process.cwd(), 'test/resources/audit-example-output-2.json'));
+    test('audit first example output by cli', async () => {
+        await audisoCmd(['--input-file=test/resources/audit-example-1.json', '--output-file=test/resources/audit-example-output-2.json', '--package-file=test/resources/package-example-1.json']);
+
+        const reportBuffer = await fs.readFile(path.resolve(process.cwd(), 'test/resources/audit-example-output-2.json'));
         const report = JSON.parse(reportBuffer.toString());
         
         expect(Array.isArray(report?.issues)).toBeTruthy();
