@@ -32,7 +32,7 @@ describe('entry test', () => {
                 type: "string",
                 quantity: 1,
                 required: false,
-                description: "",
+                description: "The path of package.json (default: ./package.json)",
                 value: "package.json",
             },
             {
@@ -41,7 +41,7 @@ describe('entry test', () => {
                 type: "string",
                 quantity: 1,
                 required: false,
-                description: "",
+                description: "The output path of sonarqube issue report (default: ./audit-dependency-report-sonarqube.json)",
                 value: "audit-dependency-report-sonarqube.json",
             },
             {
@@ -50,7 +50,7 @@ describe('entry test', () => {
                 type: "string",
                 quantity: 1,
                 required: false,
-                description: "",
+                description: "The input path of npm-audit report (default: ./audit-dependency-report.json)",
                 value: "audit-dependency-report.json",
             }
         ]);
