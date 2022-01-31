@@ -22,4 +22,38 @@ describe('entry test', () => {
         const example1Str = example1.toString();
         expect(isAudit(JSON.parse(example1Str))).toBeTruthy();
     });
+
+    test('helper', async () => {
+        const configuration = getHelper([
+            {
+                key: "packageFilePath",
+                alias: ["-p", "--package-file"],
+                type: "string",
+                quantity: 1,
+                required: false,
+                description: "",
+                value: "package.json",
+            },
+            {
+                key: "outputFilePath",
+                alias: ["-o", "--output-file"],
+                type: "string",
+                quantity: 1,
+                required: false,
+                description: "",
+                value: "audit-dependency-report-sonarqube.json",
+            },
+            {
+                key: "inputFilePath",
+                alias: ["-i", "--input-file"],
+                type: "string",
+                quantity: 1,
+                required: false,
+                description: "",
+                value: "audit-dependency-report.json",
+            }
+        ]));
+       
+        expect(configuration).toBe('[-p], [--package-file]                     1  string  ');
+    });
 });
