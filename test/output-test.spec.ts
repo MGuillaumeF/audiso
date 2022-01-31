@@ -50,7 +50,7 @@ describe('output test', () => {
             inputFilePath: path.resolve(process.cwd(), 'test/resources/audit-example-1.json'),
             outputFilePath: path.resolve(process.cwd(), 'test/resources'),
             packageFilePath: path.resolve(process.cwd(), 'test/resources/package-example-1.json')
-        }).rejects.toThrow(Error);
+        })).rejects.toThrow(Error);
     });
 
     test('audit first example output by cli', async () => {
