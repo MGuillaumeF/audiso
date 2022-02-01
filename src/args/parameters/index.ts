@@ -3,9 +3,9 @@ import { ConfigurationItem } from '../core/types';
 import { argsToConfiguration } from '../core/index';
 
 export type Parameters = {
-    inputFilePath: string;
-    outputFilePath: string;
-    packageFilePath: string;
+    inputFilePath: keyof typeof string;
+    outputFilePath: keyof typeof string;
+    packageFilePath: keyof typeof string;
 };
 
 /**
