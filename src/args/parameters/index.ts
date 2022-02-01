@@ -3,12 +3,10 @@ import { ConfigurationItem } from '../core/types';
 import { argsToConfiguration } from '../core/index';
 
 export type Parameters = {
-    inputFilePath: keyof typeof string;
-    outputFilePath: keyof typeof string;
-    packageFilePath: keyof typeof string;
+    inputFilePath: string;
+    outputFilePath: string;
+    packageFilePath: string;
 };
-
-type ParametersKey = keyof typeof Parameters;
 
 /**
  * Function to check if any data is a Parameters
@@ -73,6 +71,7 @@ export async function readParameters(args: string[]): Promise<Parameters> | Prom
     }
 
     configuration.forEach((value: ConfigurationItem) => {
+        type ParametersKey = keyof typeof params;
         const ParametersKey key = value.key;
         params[key] =
             ["inputFilePath", "outputFilePath", "packageFilePath"].includes(
