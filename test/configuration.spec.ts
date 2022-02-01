@@ -30,4 +30,12 @@ describe('configuration test', () => {
         expect(inputFilePath).toEqual(path.resolve(process.cwd(), 'my-package/my-npm-audit-report.json'));
         expect(outputFilePath).toEqual(path.resolve(process.cwd(), 'my-package/my-sonarqube-audit-report.json'));
     });
+
+    test('test helper call', () => {
+        const mockExit = jest.spyOn(process, 'exit').mockImplementation(() => {
+            console.info('mocked process exit called');
+        });
+        readParameters(['--input-file', 'my-package/my-npm-audit-report.json', '--output-file', 'my-package/my-sonarqube-audit-report.json', '--package-file', 'my-package/package.json', '-h']);
+        expect(mockExit).toHaveBeenCalledWith(0);
+    });
 });

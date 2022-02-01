@@ -1,6 +1,21 @@
 import { CliArgument, CliArguments, ConfigurationItem } from './types';
 
 /**
+ * Function to build help message of cli command
+ * @param configuration The configuration object
+ * @returns The help message
+ */
+export function getHelper(configuration : ConfigurationItem[]) : string {
+    const aliasesMaxLength = 30;
+    const quantityMaxLength = 3;
+    const typeMaxLength = 8;
+    return configuration.map(item => {
+        const aliasDisplay = (item.required ? item.alias : item.alias.map(aliasItem => `[${aliasItem}]`)).join(', ');
+        return `${aliasDisplay.padEnd(aliasesMaxLength, ' ')} ${String(item.quantity).padEnd(quantityMaxLength, ' ')} ${item.type.padEnd(typeMaxLength, ' ')} ${item.description}`
+    }).join('\n');
+}
+
+/**
  * Function to extract options of cli command
  * @param configuration The configuration of options available
  * @param args arguments of cli
@@ -12,6 +27,10 @@ export function argsToConfiguration (
 ): {
     [key: string]: CliArgument | CliArguments;
 } {
+    if (['-h', '--help'].some(helpOption => args.includes(helpOption))) {
+        console.info(getHelper(configuration));
+        process.exit(0);
+    }
     // create empty parameters scope
     const params: {
         [key: string]: CliArgument | CliArguments;
