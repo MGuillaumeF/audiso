@@ -189,7 +189,7 @@ async function auditToSonar(params: Parameters): Promise<void> {
 }
 
 if (require.main === module) {
-    (function () {
+    (async function () {
         try {
             // get arguments of process run
             const args = process.argv.slice(CLI_ARGUMENT_PADDING);
