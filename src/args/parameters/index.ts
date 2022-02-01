@@ -61,7 +61,7 @@ const configuration: ConfigurationItem[] = [
  * @param args Cli arguments array
  * @returns The parameters object found (or null if parameter object is invalid)
  */
-export async function readParameters(args: string[]): Parameters | null {
+export async function readParameters(args: string[]): Promise<Parameters> | Promise<null> {
     let params : Parameters | null = null;
     try {
         params = await argsToConfiguration(configuration, args);
