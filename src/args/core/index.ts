@@ -1,3 +1,4 @@
+import { promises as fs } from 'fs';
 import { CliArgument, CliArguments, ConfigurationItem } from './types';
 
 /**
@@ -5,14 +6,25 @@ import { CliArgument, CliArguments, ConfigurationItem } from './types';
  * @param configuration The configuration object
  * @returns The help message
  */
-export function getHelper(configuration : ConfigurationItem[]) : string {
+export async function getHelper(configuration : ConfigurationItem[]) : string {
+    const packageFileContebtBuffer = await fs.readFile(path.resolve(__dirname, '../../../package.json'));
+    const packageJson = JSON.parse(packageFileContebtBuffer.toString());
+    let title = '*** NOTICE';
+    const version = typeof packageJson?.version === 'string' ? `v&{packageJson.version}` : '';
+    if (typeof packageJson?.name === 'string') {
+     title += ` : ${packageJson.name} ${version}`;
+    }
+    if (typeof packageJson?.description === 'string') {
+     title += `\n${packageJson.description}`;
+    }
     const aliasesMaxLength = 30;
     const quantityMaxLength = 3;
     const typeMaxLength = 8;
-    return configuration.map(item => {
+    const rows = configuration.map(item => {
         const aliasDisplay = (item.required ? item.alias : item.alias.map(aliasItem => `[${aliasItem}]`)).join(', ');
         return `${aliasDisplay.padEnd(aliasesMaxLength, ' ')} ${String(item.quantity).padEnd(quantityMaxLength, ' ')} ${item.type.padEnd(typeMaxLength, ' ')} ${item.description}`
-    }).join('\n');
+    });
+    return [title, ...rows].join('\n');
 }
 
 /**
