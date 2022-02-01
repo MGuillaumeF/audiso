@@ -1,4 +1,5 @@
 import { promises as fs } from 'fs';
+import path from 'path';
 import { CliArgument, CliArguments, ConfigurationItem } from './types';
 
 /**
@@ -6,7 +7,7 @@ import { CliArgument, CliArguments, ConfigurationItem } from './types';
  * @param configuration The configuration object
  * @returns The help message
  */
-export async function getHelper(configuration : ConfigurationItem[]) : string {
+export async function getHelper(configuration : ConfigurationItem[]) : Promise<string> {
     const packageFileContebtBuffer = await fs.readFile(path.resolve(__dirname, '../../../package.json'));
     const packageJson = JSON.parse(packageFileContebtBuffer.toString());
     let title = '*** NOTICE';
@@ -33,15 +34,21 @@ export async function getHelper(configuration : ConfigurationItem[]) : string {
  * @param args arguments of cli
  * @returns Cli parameter object [key, value] fore each option
  */
-export function argsToConfiguration (
+export async function argsToConfiguration (
     configuration: ConfigurationItem[],
     args: string[]
-): {
+): Promise<{
     [key: string]: CliArgument | CliArguments;
-} {
+}> {
     if (['-h', '--help'].some(helpOption => args.includes(helpOption))) {
-        console.info(getHelper(configuration));
-        process.exit(0);
+        let result = 0;
+        try {
+            console.info(await getHelper(configuration));
+        } catch (error) {
+            console.error('helper message print error', error);
+            result = 1;
+        }
+        process.exit(result);
     }
     // create empty parameters scope
     const params: {
