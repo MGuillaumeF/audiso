@@ -69,17 +69,15 @@ export async function readParameters(args: string[]): Promise<Parameters | null>
         console.error('argsToConfiguration error : ', error);
         throw Error('configuration core exploitation raise error'); 
     }
-
+    if (isParameters(params)) {
     configuration.forEach((value: ConfigurationItem) => {
-        type ParametersKey = keyof Parameters;
-        const key : ParametersKey = value.key;
-        params[key] =
+        params[value.key] =
             ["inputFilePath", "outputFilePath", "packageFilePath"].includes(
                 value.key
             ) && typeof value.value === "string"
                 ? path.resolve(process.cwd(), value.value)
                 : value.value;
     });
-
+    }
     return isParameters(params) ? params : null;
 }
