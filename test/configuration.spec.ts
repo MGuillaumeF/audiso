@@ -32,7 +32,9 @@ describe('configuration test', () => {
     });
 
     test('test helper call', () => {
-        const mockExit = jest.spyOn(process, 'exit').mockImplementation(() => {});
+        const mockExit = jest.spyOn(process, 'exit').mockImplementation(() => {
+            console.info('mocked process exit called');
+        });
         readParameters(['--input-file', 'my-package/my-npm-audit-report.json', '--output-file', 'my-package/my-sonarqube-audit-report.json', '--package-file', 'my-package/package.json', '-h']);
         expect(mockExit).toHaveBeenCalledWith(0);
     });
