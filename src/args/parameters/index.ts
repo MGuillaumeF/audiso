@@ -71,7 +71,7 @@ export async function readParameters(args: string[]): Promise<Parameters> | Prom
     }
 
     configuration.forEach((value: ConfigurationItem) => {
-        type ParametersKey = keyof typeof params;
+        type ParametersKey = keyof Parameters;
         const ParametersKey key = value.key;
         params[key] =
             ["inputFilePath", "outputFilePath", "packageFilePath"].includes(
