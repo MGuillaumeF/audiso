@@ -8,6 +8,8 @@ export type Parameters = {
     packageFilePath: keyof typeof string;
 };
 
+type ParametersKey = keyof typeof Parameters;
+
 /**
  * Function to check if any data is a Parameters
  * @param data The data to check if is a valid Parameters
@@ -71,7 +73,8 @@ export async function readParameters(args: string[]): Promise<Parameters> | Prom
     }
 
     configuration.forEach((value: ConfigurationItem) => {
-        params[value.key] =
+        const ParametersKey key = value.key;
+        params[key] =
             ["inputFilePath", "outputFilePath", "packageFilePath"].includes(
                 value.key
             ) && typeof value.value === "string"
