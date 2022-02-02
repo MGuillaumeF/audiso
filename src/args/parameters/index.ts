@@ -8,6 +8,17 @@ export type Parameters = {
     packageFilePath: string;
 };
 
+export type KeyOfParameters = keyof Parameters;
+
+/**
+ * Function to check if string key is a KeyOfParameters
+ * @param key The key to check if is a valid KeyOfParameters
+ * @returns boolean, type narrowing of KeyOfParameters
+ */
+export function isKeyOfParameters(key : string) : key is KeyOfParameters {
+ return ['inputFilePath', 'outputFilePath', 'packageFilePath'].includes(key);
+}
+
 /**
  * Function to check if any data is a Parameters
  * @param data The data to check if is a valid Parameters
@@ -71,11 +82,10 @@ export async function readParameters(args: string[]): Promise<Parameters | null>
         throw Error('configuration core exploitation raise error'); 
     }
     if (isParameters(params)) {
-        configuration.forEach((value: ConfigurationItem) => {
-            if (params !== null && value.key in params) {
-                type ParametersKey = keyof Parameters;
-                params[value.key as ParametersKey] = typeof value.value === "string"
-                    ? path.resolve(process.cwd(), value.value) : '';
+        configuration.forEach((configurationItem: ConfigurationItem) => {
+            const { key, value } = configurationItem;
+            if (isKeyOfParameters(key)) {
+                params[key] = typeof value === "string" ? path.resolve(process.cwd(), value) : '';
             }
         });
     }
