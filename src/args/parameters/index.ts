@@ -75,8 +75,7 @@ export async function readParameters(args: string[]): Promise<Parameters | null>
             if (params !== null && value.key in params) {
                 type ParametersKey = keyof Parameters;
                 params[value.key as ParametersKey] = typeof value.value === "string"
-                    ? path.resolve(process.cwd(), value.value)
-                    : '';
+                    ? path.resolve(process.cwd(), value.value) : '';
             }
         });
     }
