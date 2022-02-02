@@ -25,7 +25,7 @@ describe('entry test', () => {
     });
 
     test('helper', async () => {
-        const configuration = getHelper([
+        const configuration = await getHelper([
             {
                 key: "packageFilePath",
                 alias: ["-p", "--package-file"],
