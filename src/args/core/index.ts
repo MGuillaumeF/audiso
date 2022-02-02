@@ -29,6 +29,41 @@ export async function getHelper(configuration : ConfigurationItem[]) : Promise<s
 }
 
 /**
+ * Function to display helper if have options on cli command args
+ * @param configuration The configuration of options available
+ * @param args arguments of cli
+ */
+async function manageHelper (configuration: ConfigurationItem[], args: string[]) : Promise<void> {
+    if (['-h', '--help'].some(helpOption => args.includes(helpOption))) {
+        let result = 0;
+        try {
+            console.info(await getHelper(configuration));
+        } catch (error) {
+            console.error('helper message print error', error);
+            result = 1;
+        }
+        process.exit(result);
+    }
+}
+
+/**
+ * Function to display version if have options on cli command args
+ * @param args arguments of cli
+ */
+async function manageVersion (args: string[]) : Promise<void> {
+    if (['-v', '--version'].some(helpOption => args.includes(helpOption))) {
+        let result = 0;
+        try {
+            console.info(await getVersion());
+        } catch (error) {
+            console.error('version message print error', error);
+            result = 1;
+        }
+        process.exit(result);
+    }
+}
+
+/**
  * Function to extract options of cli command
  * @param configuration The configuration of options available
  * @param args arguments of cli
@@ -40,16 +75,8 @@ export async function argsToConfiguration (
 ): Promise<{
     [key: string]: CliArgument | CliArguments;
 }> {
-    if (['-h', '--help'].some(helpOption => args.includes(helpOption))) {
-        let result = 0;
-        try {
-            console.info(await getHelper(configuration));
-        } catch (error) {
-            console.error('helper message print error', error);
-            result = 1;
-        }
-        process.exit(result);
-    }
+    await manageHelper(configuration, args);
+    await manageVersion(args);
     // create empty parameters scope
     const params: {
         [key: string]: CliArgument | CliArguments;
