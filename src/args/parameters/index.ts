@@ -32,7 +32,10 @@ export function isParameters(data: any): data is Parameters {
             data?.inputFilePath,
             data?.outputFilePath,
             data?.packageFilePath,
-        ].every((value) => typeof value === "string" && value.trim() !== "")
+        ].every((value) => {
+            // typeof value === "string" && value.trim() !== ""
+            return value !== undefined
+        })
     );
 }
 
