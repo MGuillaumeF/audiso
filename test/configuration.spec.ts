@@ -2,7 +2,7 @@ import path from 'path';
 import { readParameters } from '../src/args/parameters/index.ts';
 
 // test configuration
-describe('configuration test', async () => {
+describe('configuration test', () => {
     console.log('configuration test');
     test('no args configuration parameters', async () => {
         const parameters = await readParameters([]);
