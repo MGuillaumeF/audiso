@@ -66,7 +66,7 @@ describe('entry test', () => {
         try {
             const helpCmd = await cmd(['audiso', '-h'].join(' '));
             const versionCmd = await cmd(['audiso', '-v'].join(' '));
-            expect((versionCmd.stdout).toBe('v0.0.2');
+            expect(versionCmd.stdout).toBe('v0.0.2');
             expect(helpCmd.stdout).toBe('*** NOTICE : @mguillaumef/audiso v0.0.2\nThis module module convert npm-audit json report to sonarqube generic data issue report.\n[-p], [--package-file]         1   string   The path of package.json (default: ./package.json)\n[-o], [--output-file]          1   string   The output path of sonarqube issue report (default: ./audit-dependency-report-sonarqube.json)\n[-i], [--input-file]           1   string   The input path of npm-audit report (default: ./audit-dependency-report.json)');
         } catch (e) {
             console.error(e); // should contain code (exit code) and signal (that caused the termination).
