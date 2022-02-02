@@ -72,7 +72,7 @@ export async function readParameters(args: string[]): Promise<Parameters | null>
                 extractedParams[key] = typeof value === "string" ? path.resolve(process.cwd(), value) : '';
             }
         });
-        if (isParameters(params)) {
+        if (isParameters(extractedParams)) {
             params = extractedParams;
         }
     } catch (error) {
