@@ -11,7 +11,7 @@ export async function getHelper(configuration : ConfigurationItem[]) : Promise<s
     const packageFileContebtBuffer = await fs.readFile(path.resolve(__dirname, '../../../package.json'));
     const packageJson = JSON.parse(packageFileContebtBuffer.toString());
     let title = '*** NOTICE';
-    const version = typeof packageJson?.version === 'string' ? `v&{packageJson.version}` : '';
+    const version = typeof packageJson?.version === 'string' ? `v${packageJson.version}` : '';
     if (typeof packageJson?.name === 'string') {
      title += ` : ${packageJson.name} ${version}`;
     }
