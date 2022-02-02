@@ -27,7 +27,7 @@ export function isKeyOfParameters(key : string) : key is KeyOfParameters {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
 export function isParameters(data: any): data is Parameters {
     return (
-        typeof data === "object" &&
+        data != null && typeof data === "object" &&
         [
             data?.inputFilePath,
             data?.outputFilePath,
