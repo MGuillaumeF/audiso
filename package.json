@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc --project .",
     "postbuild": "npm uninstall -g . && npm install -g .",
-    "test": "jest test --coverage",
+    "test": "jest test --coverage --silent --verbose",
     "prettier": "prettier --write . --ignore-path ./.gitignore",
     "lint:eslint": "eslint . --fix --format html --output-file ./dist/reports/lint/eslint-report.html --ignore-path ./.gitignore",
     "lint:eslint:json": "eslint . --fix --format json --output-file ./dist/reports/lint/eslint-report.json --ignore-path ./.gitignore"
