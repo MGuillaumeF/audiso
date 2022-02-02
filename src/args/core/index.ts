@@ -29,6 +29,17 @@ export async function getHelper(configuration : ConfigurationItem[]) : Promise<s
 }
 
 /**
+ * Function to build version message of cli command
+ * @returns The version message
+ */
+export async function getVersion() : Promise<string> {
+    const packageFileContebtBuffer = await fs.readFile(path.resolve(__dirname, '../../../package.json'));
+    const packageJson = JSON.parse(packageFileContebtBuffer.toString());
+   
+    return typeof packageJson?.version === 'string' ? `v${packageJson.version}` : 'unknown version';
+}
+
+/**
  * Function to display helper if have options on cli command args
  * @param configuration The configuration of options available
  * @param args arguments of cli
