@@ -73,8 +73,8 @@ export async function readParameters(args: string[]): Promise<Parameters | null>
     if (isParameters(params)) {
         configuration.forEach((value: ConfigurationItem) => {
             if (params !== null && value.key in params) {
-                type indexKey = value.key;
-                params[indexKey] = typeof value.value === "string"
+                type ParametersKey = keyof Parameters;
+                params[indexKey as ParametersKey] = typeof value.value === "string"
                     ? path.resolve(process.cwd(), value.value)
                     : '';
             }
