@@ -64,7 +64,8 @@ const configuration: ConfigurationItem[] = [
 export async function readParameters(args: string[]): Promise<Parameters | null> {
     let params : Parameters | null = null;
     try {
-        params = await argsToConfiguration(configuration, args);
+        const extractedParams = await argsToConfiguration(configuration, args);
+        params = isParameters(extractedParams) ? extractedParams : null;
     } catch (error) {
         console.error('argsToConfiguration error : ', error);
         throw Error('configuration core exploitation raise error'); 
@@ -72,9 +73,11 @@ export async function readParameters(args: string[]): Promise<Parameters | null>
     if (isParameters(params)) {
         configuration.forEach((value: ConfigurationItem) => {
             if (value.key in params) {
-                params[value.key] = typeof value?.value === "string"
+                type ParametersKey = keyof Parameters;
+                const indexKey : ParametersKey = value.key;
+                params[indexKey] = typeof value.value === "string"
                     ? path.resolve(process.cwd(), value.value)
-                    : value?.value;
+                    : value.value;
             }
         });
     }
