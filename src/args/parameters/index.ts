@@ -77,7 +77,7 @@ export async function readParameters(args: string[]): Promise<Parameters | null>
                 const indexKey : ParametersKey = value.key;
                 params[indexKey] = typeof value.value === "string"
                     ? path.resolve(process.cwd(), value.value)
-                    : value.value;
+                    : '';
             }
         });
     }
