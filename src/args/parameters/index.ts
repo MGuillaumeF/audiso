@@ -16,7 +16,7 @@ export type Parameters = {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
 export function isParameters(data: any): data is Parameters {
     return (
-        data != null && typeof data === "object" &&
+        typeof data === "object" &&
         [
             data?.inputFilePath,
             data?.outputFilePath,
@@ -77,7 +77,7 @@ export async function readParameters(args: string[]): Promise<Parameters | null>
         }
     } catch (error) {
         console.error('argsToConfiguration error : ', error);
-        throw Error('configuration core exploitation raise error'); 
+        throw Error('configuration core exploitation raise error');
     }
     return params;
 }
