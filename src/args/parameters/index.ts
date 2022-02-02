@@ -8,17 +8,6 @@ export type Parameters = {
     packageFilePath: string;
 };
 
-export type KeyOfParameters = keyof Parameters;
-
-/**
- * Function to check if string key is a KeyOfParameters
- * @param key The key to check if is a valid KeyOfParameters
- * @returns boolean, type narrowing of KeyOfParameters
- */
-export function isKeyOfParameters(key : string) : key is KeyOfParameters {
- return ['inputFilePath', 'outputFilePath', 'packageFilePath'].includes(key);
-}
-
 /**
  * Function to check if any data is a Parameters
  * @param data The data to check if is a valid Parameters
@@ -32,10 +21,7 @@ export function isParameters(data: any): data is Parameters {
             data?.inputFilePath,
             data?.outputFilePath,
             data?.packageFilePath,
-        ].every((value) => {
-            // typeof value === "string" && value.trim() !== ""
-            return value !== undefined
-        })
+        ].every((value) => typeof value === "string" && value.trim() !== "")
     );
 }
 
@@ -79,18 +65,19 @@ export async function readParameters(args: string[]): Promise<Parameters | null>
     let params : Parameters | null = null;
     try {
         const extractedParams = await argsToConfiguration(configuration, args);
-        params = isParameters(extractedParams) ? extractedParams : null;
+
+        configuration.forEach((configurationItem: ConfigurationItem) => {
+            const { key, value } = configurationItem;
+            if (['inputFilePath', 'outputFilePath', 'packageFilePath'].includes(key)) {
+                extractedParams[key] = typeof value === "string" ? path.resolve(process.cwd(), value) : '';
+            }
+        });
+        if (isParameters(params)) {
+            params = extractedParams;
+        }
     } catch (error) {
         console.error('argsToConfiguration error : ', error);
         throw Error('configuration core exploitation raise error'); 
     }
-    if (isParameters(params)) {
-        configuration.forEach((configurationItem: ConfigurationItem) => {
-            const { key, value } = configurationItem;
-            if (isKeyOfParameters(key) && params !== null) {
-                params[key] = typeof value === "string" ? path.resolve(process.cwd(), value) : '';
-            }
-        });
-    }
-    return isParameters(params) ? params : null;
+    return params;
 }
