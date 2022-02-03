@@ -15,7 +15,11 @@ describe('configuration test', () => {
 
     test('bad args configuration parameters', async () => {
         const parameters = await readParameters(['--input-file= ', '--output-file= ', '--package-file= ']);
-        expect(parameters).toEqual(null);
+        const { packageFilePath, inputFilePath, outputFilePath } = parameters;
+
+        expect(packageFilePath).toEqual(path.resolve(process.cwd(), 'package.json'));
+        expect(inputFilePath).toEqual(path.resolve(process.cwd(), 'audit-dependency-report.json'));
+        expect(outputFilePath).toEqual(path.resolve(process.cwd(), 'audit-dependency-report-sonarqube.json'));
     });
 
     test('attached configuration parameters', async () => {
