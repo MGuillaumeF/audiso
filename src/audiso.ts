@@ -189,22 +189,24 @@ async function auditToSonar(params: Parameters): Promise<void> {
 }
 
 if (require.main === module) {
-    try {
-        // get arguments of process run
-        const args = process.argv.slice(CLI_ARGUMENT_PADDING);
+    (async function () {
+        try {
+            // get arguments of process run
+            const args = process.argv.slice(CLI_ARGUMENT_PADDING);
 
-        const params = readParameters(args);
+            const params = await readParameters(args);
 
-        if (params !== null) {
-            auditToSonar(params);
-        } else {
-            console.error("parameters invalid");
-            throw Error("entry parameters invalid");
+            if (params !== null) {
+                auditToSonar(params);
+            } else {
+                console.error("parameters invalid");
+                throw Error("entry parameters invalid");
+            }
+        } catch (error) {
+            console.error("convert failed with error", error);
+            process.exit(1);
         }
-    } catch (error) {
-        console.error("convert failed with error", error);
-        process.exit(1);
-    }
+    })();
 }
 
 const audiso = { auditToSonar };

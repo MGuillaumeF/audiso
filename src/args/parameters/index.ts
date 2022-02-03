@@ -61,17 +61,23 @@ const configuration: ConfigurationItem[] = [
  * @param args Cli arguments array
  * @returns The parameters object found (or null if parameter object is invalid)
  */
-export function readParameters(args: string[]): Parameters | null {
-    const params = argsToConfiguration(configuration, args);
+export async function readParameters(args: string[]): Promise<Parameters | null> {
+    let params : Parameters | null = null;
+    try {
+        const extractedParams = await argsToConfiguration(configuration, args);
 
-    configuration.forEach((value: ConfigurationItem) => {
-        params[value.key] =
-            ["inputFilePath", "outputFilePath", "packageFilePath"].includes(
-                value.key
-            ) && typeof value.value === "string"
-                ? path.resolve(process.cwd(), value.value)
-                : value.value;
-    });
-
-    return isParameters(params) ? params : null;
+        configuration.forEach((configurationItem: ConfigurationItem) => {
+            const { key, value } = configurationItem;
+            if (['inputFilePath', 'outputFilePath', 'packageFilePath'].includes(key)) {
+                extractedParams[key] = typeof value === "string" ? path.resolve(process.cwd(), value) : '';
+            }
+        });
+        if (isParameters(extractedParams)) {
+            params = extractedParams;
+        }
+    } catch (error) {
+        console.error('argsToConfiguration error : ', error);
+        throw Error('configuration core exploitation raise error');
+    }
+    return params;
 }
