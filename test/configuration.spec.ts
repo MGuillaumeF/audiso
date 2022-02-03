@@ -13,6 +13,11 @@ describe('configuration test', () => {
         expect(outputFilePath).toEqual(path.resolve(process.cwd(), 'audit-dependency-report-sonarqube.json'));
     });
 
+    test('bad args configuration parameters', async () => {
+        const parameters = await readParameters(['--input-file= ', '--output-file= ', '--package-file= ']);
+        expect(parameters).toEqual(null);
+    });
+
     test('attached configuration parameters', async () => {
         const parameters = await readParameters(['--input-file=my-package/my-npm-audit-report.json', '--output-file=my-package/my-sonarqube-audit-report.json', '--package-file=my-package/package.json']);
         const { packageFilePath, inputFilePath, outputFilePath } = parameters;
