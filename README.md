@@ -11,6 +11,16 @@ This module module convert npm-audit json report to sonarqube generic data issue
 
 ## how to use
 
+### help message
+
+```
+*** NOTICE : @mguillaumef/audiso v0.0.3
+This module module convert npm-audit json report to sonarqube generic data issue report.
+[-p], [--package-file]         1   string   The path of package.json (default: ./package.json)
+[-o], [--output-file]          1   string   The output path of sonarqube issue report (default: ./audit-dependency-report-sonarqube.json)
+[-i], [--input-file]           1   string   The input path of npm-audit report (default: ./audit-dependency-report.json)
+```
+
 ### generate npm-audit report (npm>=8)
 
 ```

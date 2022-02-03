@@ -21,7 +21,9 @@
   "keywords": [
     "vulnerability",
     "sonarqube",
-    "audit"
+    "audit",
+    "audiso",
+    "quality"
   ],
   "author": "MGuillaumeF",
   "license": "GPL-3.0-or-later",
