@@ -93,7 +93,7 @@ async function auditToSonar(params: Parameters): Promise<void> {
         ["low", "MINOR"],
         ["moderate", "MINOR"],
         ["high", "MAJOR"],
-        ["critical", "CRITICAL"],
+        ["critical", "CRITICAL"]
     ]);
 
     let auditJsonString = "";
@@ -149,9 +149,9 @@ async function auditToSonar(params: Parameters): Promise<void> {
                     textRange: {
                         startLine,
                         startColumn,
-                        endColumn,
-                    },
-                },
+                        endColumn
+                    }
+                }
             });
         }
     }
@@ -172,9 +172,9 @@ async function auditToSonar(params: Parameters): Promise<void> {
             filePath: params.packageFilePath,
             textRange: {
                 startLine: 1,
-                startColumn: 0,
-            },
-        },
+                startColumn: 0
+            }
+        }
     });
 
     // write sonarqube generic issue report

@@ -2,9 +2,21 @@ import path from "path";
 import { ConfigurationItem } from '../core/types';
 import { argsToConfiguration } from '../core/index';
 
+/**
+ * type of parameters object to use converter
+ */
 export type Parameters = {
+    /**
+     * the relative path file of input conversion
+     */
     inputFilePath: string;
+    /**
+     * the relative path file of output conversion
+     */
     outputFilePath: string;
+    /**
+     * the relative path file of package.json to analyze
+     */
     packageFilePath: string;
 };
 
@@ -20,7 +32,7 @@ export function isParameters(data: any): data is Parameters {
         [
             data?.inputFilePath,
             data?.outputFilePath,
-            data?.packageFilePath,
+            data?.packageFilePath
         ].every((value) => typeof value === "string" && value.trim() !== "")
     );
 }
@@ -34,7 +46,7 @@ const configuration: ConfigurationItem[] = [
         quantity: 1,
         required: false,
         description: "The path of package.json (default: ./package.json)",
-        value: "package.json",
+        value: "package.json"
     },
     {
         key: "outputFilePath",
@@ -43,7 +55,7 @@ const configuration: ConfigurationItem[] = [
         quantity: 1,
         required: false,
         description: "The output path of sonarqube issue report (default: ./audit-dependency-report-sonarqube.json)",
-        value: "audit-dependency-report-sonarqube.json",
+        value: "audit-dependency-report-sonarqube.json"
     },
     {
         key: "inputFilePath",
@@ -52,7 +64,7 @@ const configuration: ConfigurationItem[] = [
         quantity: 1,
         required: false,
         description: "The input path of npm-audit report (default: ./audit-dependency-report.json)",
-        value: "audit-dependency-report.json",
+        value: "audit-dependency-report.json"
     }
 ];
 
@@ -64,14 +76,17 @@ const configuration: ConfigurationItem[] = [
 export async function readParameters(args: string[]): Promise<Parameters | null> {
     let params : Parameters | null = null;
     try {
+        // get all options from cli arguments
         const extractedParams = await argsToConfiguration(configuration, args);
 
         configuration.forEach((configurationItem: ConfigurationItem) => {
             const { key, value } = configurationItem;
+            // build path with current working directory resolution for each parameters key on key/value object
             if (['inputFilePath', 'outputFilePath', 'packageFilePath'].includes(key)) {
                 extractedParams[key] = typeof value === "string" ? path.resolve(process.cwd(), value) : '';
             }
         });
+        // convert key/value to parameters if guard is passed
         if (isParameters(extractedParams)) {
             params = extractedParams;
         }
