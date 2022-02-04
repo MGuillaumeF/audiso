@@ -175,7 +175,7 @@ async function auditToSonar(params: Parameters): Promise<void> {
             // search rows where package name appears in package.json file
             const rows = packageJsonFile.slice(0, packageNameIndex).split("\n");
             const startLine = rows.length;
-            // get column of package name in line on package.json 
+            // get column of package name in line on package.json
             const startColumn = rows.slice(-1).shift()?.length || 0;
             const endColumn = startColumn + packageName.length;
 
