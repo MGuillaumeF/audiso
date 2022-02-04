@@ -1,26 +1,62 @@
 #!/usr/bin/env node
 
+// node imports
 import { promises as fs } from "fs";
-
+// cli args reading imports
 import { readParameters, Parameters } from './args/parameters/index';
 
+// spaces of pretty print of JSON objects
 const JSON_LEFT_SPACE = 4;
+// arguments of cli start at index 2
 const CLI_ARGUMENT_PADDING = 2;
 
+/**
+ * type of vulnerability object of audit report (input)
+ */
 type Vulnerability = {
+    /**
+     * description of fix available or false if fix not available
+     */
     fixAvailable: { name: string; version: string } | false;
+    /**
+     * the dependence with vulnerability is direct dependency declared in package json file. (false if sub-dependency)
+     */
     isDirect: boolean;
+    /**
+     * the severity of vulnerability
+     */
     severity: string;
 };
 
+/**
+ * type of audit report (input)
+ */
 type Audit = {
+    /**
+     * the version of audit report
+     */
     auditReportVersion: number;
+    /**
+     * metadata is the summary of result of report
+     */
     metadata: {
+        /**
+         * object with vulnerability count by severity
+         */
         vulnerabilities: {
+            /**
+             * count item, key is severity level
+             */
             [key: string]: number;
         };
     };
+    /**
+     * object of vulnerabilities, each entry is a vulnerability
+     */
     vulnerabilities: {
+        /**
+         * vulnerability item, key is package name of vulnerability
+         */
         [key: string]: Vulnerability;
     };
 };
@@ -97,6 +133,7 @@ async function auditToSonar(params: Parameters): Promise<void> {
     ]);
 
     let auditJsonString = "";
+    // read input file
     try {
         const buffer = await fs.readFile(params.inputFilePath);
         auditJsonString = buffer.toString();
@@ -107,30 +144,38 @@ async function auditToSonar(params: Parameters): Promise<void> {
 
     let audit: Audit | null = null;
     let data: unknown;
+
+    // parsing of audit report
     try {
         data = JSON.parse(auditJsonString);
     } catch (error) {
         console.error("entry data invalid, parsing error", error);
         throw Error("entry data invalid, parsing error");
     }
+    // narrowing of data as audit object
     if (isAudit(data)) {
         audit = data;
     } else {
         throw Error("entry data is not a valid npm-audit data");
     }
     const issues = [];
+    // generate engine id for all issues
     const engineId = `npm-audit-${audit.auditReportVersion}`;
+    // for each vulnerability object of audit report
     for (const [packageName, vulnerability] of Object.entries(
         audit.vulnerabilities
     )) {
+        // filter direct vulnerability only
         if (vulnerability.isDirect) {
             const packageJsonFileBuffer = await fs.readFile(
                 params.packageFilePath
             );
             const packageJsonFile = packageJsonFileBuffer.toString();
             const packageNameIndex = packageJsonFile.indexOf(packageName);
+            // search rows where package name appears in package.json file
             const rows = packageJsonFile.slice(0, packageNameIndex).split("\n");
             const startLine = rows.length;
+            // get column of package name in line on package.json
             const startColumn = rows.slice(-1).shift()?.length || 0;
             const endColumn = startColumn + packageName.length;
 
@@ -138,6 +183,7 @@ async function auditToSonar(params: Parameters): Promise<void> {
             if (vulnerability.fixAvailable) {
                 message += `, fix available in ${vulnerability.fixAvailable.name} version : ${vulnerability.fixAvailable.version}`;
             }
+            // add issue in sonarqube report array
             issues.push({
                 engineId,
                 ruleId: "dependency-vulnerability",
@@ -188,6 +234,7 @@ async function auditToSonar(params: Parameters): Promise<void> {
     }
 }
 
+// if run with node command
 if (require.main === module) {
     (async function () {
         try {
