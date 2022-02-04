@@ -20,7 +20,7 @@ export function isParameters(data: any): data is Parameters {
         [
             data?.inputFilePath,
             data?.outputFilePath,
-            data?.packageFilePath,
+            data?.packageFilePath
         ].every((value) => typeof value === "string" && value.trim() !== "")
     );
 }
@@ -34,7 +34,7 @@ const configuration: ConfigurationItem[] = [
         quantity: 1,
         required: false,
         description: "The path of package.json (default: ./package.json)",
-        value: "package.json",
+        value: "package.json"
     },
     {
         key: "outputFilePath",
@@ -43,7 +43,7 @@ const configuration: ConfigurationItem[] = [
         quantity: 1,
         required: false,
         description: "The output path of sonarqube issue report (default: ./audit-dependency-report-sonarqube.json)",
-        value: "audit-dependency-report-sonarqube.json",
+        value: "audit-dependency-report-sonarqube.json"
     },
     {
         key: "inputFilePath",
@@ -52,7 +52,7 @@ const configuration: ConfigurationItem[] = [
         quantity: 1,
         required: false,
         description: "The input path of npm-audit report (default: ./audit-dependency-report.json)",
-        value: "audit-dependency-report.json",
+        value: "audit-dependency-report.json"
     }
 ];
 
