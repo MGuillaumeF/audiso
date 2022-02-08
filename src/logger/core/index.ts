@@ -155,7 +155,7 @@ export class CliLogger extends Logger {
             }
         };
     }
-        private write(message : string) => {
+        private write(message : string) : void {
             if (batchLog.length < 20) {
                 batchLog.push(message);
             } else {
@@ -170,6 +170,8 @@ export class CliLogger extends Logger {
 
         public getMessage(level : ELoggerLevel, theme : string, messages : string[]) : string {
             return `${(new Date()).toLocaleString('fr-FR')} [${MLogLevel.at(level)}] - ${theme} : ${messages.join(' ')}`;
+        }
+
         public stopLogger() : void {
             fs.writeFile(path.resolve(process.cwd(), 'audiso.log'), `${batchLog.join('\n')}\n`, { flag : 'a' });
                 batchLog = [];
