@@ -77,7 +77,7 @@ export abstract class Logger {
      * @param messages the list of message to log
      * @param error the exception to log
      */
-    public trace(level: ELoggerLevel, theme: string, message : string, error : Error) {
+    public trace(level: ELoggerLevel, theme: string, message : string, error ?: Error) {
         if (level >= this.configuration[theme].level) {
             const message = this.getMessage(level, theme, [message], error);
             this.configuration[theme].appenders.forEach((appender) => appender(message));
