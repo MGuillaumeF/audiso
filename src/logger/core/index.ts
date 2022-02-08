@@ -110,7 +110,7 @@ export abstract class Logger {
      * @param messages the liste of message to log
      * @return the formated log
      */
-    public getMessage(level : ELoggerLevel, theme : string, messages : string[]) : string;
+    public abstract getMessage(level : ELoggerLevel, theme : string, messages : string[]) : string;
     /**
      * method to format message with error to log
      * @param level the level of log
@@ -119,7 +119,7 @@ export abstract class Logger {
      * @param error the exception to log
      * @return the formated log
      */
-    public getMessage<T extends Error>(level : ELoggerLevel, theme : string, message : string, error : T) : string;
+    public abstract getMessage<T extends Error>(level : ELoggerLevel, theme : string, message : string, error : T) : string;
 }
 
 
