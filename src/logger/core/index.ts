@@ -58,8 +58,8 @@ export abstract class Logger {
      * @param message the message to log
      * @param error the exception to log
      */
-    public error<T extends Error>(theme: string, message : string, error : T) {
-        this.trace(ELoggerLevel.ERROR, theme, message, error);
+    public error(theme: string, message : string, error : Error) {
+        this.trace(ELoggerLevel.ERROR, theme, [message], error);
     }
     /**
      * method to print message
@@ -67,51 +67,31 @@ export abstract class Logger {
      * @param message the message to log
      * @param error the exception to log
      */
-    public fatal<T extends Error>(theme: string, message : string, error : T) {
-        this.trace(ELoggerLevel.FATAL, theme, message, error);
+    public fatal(theme: string, message : string, error : Error) {
+        this.trace(ELoggerLevel.FATAL, theme, [message], error);
     }
 
     /**
      * method to print message
      * @param theme the theme associated of log
-     * @param messages the liste of message to log
-     */
-    public trace(level: ELoggerLevel, theme: string, messages : string[]): void {
-    if (level >= this.configuration[theme].level) {
-        const message = this.getMessage(level, theme, messages);
-        this.configuration[theme].appenders.forEach((appender) => appender(message));
-    }
-}
-
-    /**
-     * method to print message
-     * @param theme the theme associated of log
-     * @param message the message to log
+     * @param messages the list of message to log
      * @param error the exception to log
      */
-    public trace<T extends Error>(level: ELoggerLevel, theme: string, message : string, error : T) {
+    public trace(level: ELoggerLevel, theme: string, message : string, error : Error) {
         if (level >= this.configuration[theme].level) {
-            const message = this.getMessage(level, theme, message, error);
+            const message = this.getMessage(level, theme, [message], error);
             this.configuration[theme].appenders.forEach((appender) => appender(message));
         }
     }
-    /**
-     * method to format message list to log
-     * @param level the level of log
-     * @param theme the theme associated of log
-     * @param messages the liste of message to log
-     * @return the formated log
-     */
-    public abstract getMessage(level : ELoggerLevel, theme : string, messages : string[]) : string;
-    /**
+     /**
      * method to format message with error to log
      * @param level the level of log
      * @param theme the theme associated of log
-     * @param message the message to log
+     * @param messages the list of message to log
      * @param error the exception to log
      * @return the formated log
      */
-    public abstract getMessage<T extends Error>(level : ELoggerLevel, theme : string, message : string, error : T) : string;
+    public abstract getMessage(level : ELoggerLevel, theme : string, messages : string[], error ?: Error) : string;
 }
 
 
@@ -168,12 +148,8 @@ export class CliLogger extends Logger {
             }
         }
 
-       public getMessage<T extends Error>(level : ELoggerLevel, theme : string, message : string, error : T) : string {
-            return `${(new Date()).toLocaleString('fr-FR')} [${MLogLevel.at(level)}] - ${theme} : ${message} ${error.message} - stack : ${error?.stack}`;
-        }
-
-        public getMessage(level : ELoggerLevel, theme : string, messages : string[]) : string {
-            return `${(new Date()).toLocaleString('fr-FR')} [${MLogLevel.at(level)}] - ${theme} : ${messages.join(' ')}`;
+       public getMessage<T extends Error>(level : ELoggerLevel, theme : string, messages : string[], error ?: Error) : string {
+            return `${(new Date()).toLocaleString('fr-FR')} [${MLogLevel.at(level)}] - ${theme} : ${messages.join(' ')} ${error?.message} - stack : ${error?.stack}`;
         }
 
         public stopLogger() : void {
