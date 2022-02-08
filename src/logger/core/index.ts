@@ -90,7 +90,7 @@ export abstract class Logger {
      * @param error the exception to log
      */
     public trace<T extends Error>(level: ELoggerLevel, theme: string, message : string, error : T) {
-        if (level >= configuration[theme].level) {
+        if (level >= this.configuration[theme].level) {
             const message = this.getMessage(level, theme, message, error);
             this.configuration[theme].appenders.forEach((appender) => appender(message));
         }
@@ -141,6 +141,7 @@ export class CliLogger extends Logger {
     }
 
     constructor () {
+        super();
         this.configuration = {
             IO : {
                 level : ELoggerLevel.INFO,
@@ -157,7 +158,6 @@ export class CliLogger extends Logger {
                 ]
             }
         };
-        super();
     }
         private write(message : string) : void {
             if (this.batchLog.length < 20) {
