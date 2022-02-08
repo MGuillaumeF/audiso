@@ -19,7 +19,7 @@ export type LoggerConfigurationItem = {
 
 export abstract class Logger {
     private static logger: Logger;
-    private configuration: { [key : string] : ILoggerConfigurationItem }
+    private configuration: { [key : string] : LoggerConfigurationItem }
 
     /**
      * constructor of Logger
@@ -43,7 +43,7 @@ export abstract class Logger {
      * @param messages the liste of message to log
      */
     public debug(theme: string, ...messages : string[]) {
-        trace(ELoggerLevel.DEBUG, theme, ...messages);
+        this.trace(ELoggerLevel.DEBUG, theme, ...messages);
     }
     /**
      * method to print message
@@ -51,7 +51,7 @@ export abstract class Logger {
      * @param messages the liste of message to log
      */
     public info(theme: string, ...messages : string[]) {
-        trace(ELoggerLevel.INFO, theme, ...messages);
+        this.trace(ELoggerLevel.INFO, theme, ...messages);
     }
     /**
      * method to print message
@@ -59,7 +59,7 @@ export abstract class Logger {
      * @param messages the liste of message to log
      */
     public warn(theme: string, ...messages : string[]) {
-        trace(ELoggerLevel.WARN, theme, ...messages);
+        this.trace(ELoggerLevel.WARN, theme, ...messages);
     }
     /**
      * method to print message
@@ -68,7 +68,7 @@ export abstract class Logger {
      * @param error the exception to log
      */
     public error<T extends Error>(theme: string, messages : string, error : T) {
-        trace(ELoggerLevel.ERROR, theme, message, error);
+        this.trace(ELoggerLevel.ERROR, theme, message, error);
     }
     /**
      * method to print message
@@ -77,7 +77,7 @@ export abstract class Logger {
      * @param error the exception to log
      */
     public fatal<T extends Error>(theme: string, messages : string, error : T) {
-        trace(ELoggerLevel.FATAL, theme, message, error);
+        this.trace(ELoggerLevel.FATAL, theme, message, error);
     }
 
     /**
@@ -88,7 +88,7 @@ export abstract class Logger {
     public trace(level: ELoggerLevel, theme: string, ...messages : string[]): void {
     if (level >= configuration[theme].level) {
         const message = getMessage(level, theme, messages);
-        configuration[theme].appenders.forEach((appender) => appender(message));
+        this.configuration[theme].appenders.forEach((appender) => appender(message));
     }
 }
 
@@ -101,7 +101,7 @@ export abstract class Logger {
     public trace<T extends Error>(level: ELoggerLevel, theme: string, message : string, error : T) {
         if (level >= configuration[theme].level) {
             const message = getMessage(level, theme, message, error);
-            configuration[theme].appenders.forEach((appender) => appender(message));
+            this.configuration[theme].appenders.forEach((appender) => appender(message));
         }
     }
     /**
@@ -143,24 +143,24 @@ export class CliLogger extends Logger {
                 level : ELoggerLevel.INFO,
                 appenders : [
                     console.info,
-                    write
+                    this.write
                 ]
             },
             DATA : {
                 level : ELoggerLevel.INFO,
                 appenders : [
                     console.info,
-                    write
+                    this.write
                 ]
             }
         };
     }
         private write(message : string) : void {
-            if (batchLog.length < 20) {
-                batchLog.push(message);
+            if (this.batchLog.length < 20) {
+                this.batchLog.push(message);
             } else {
-                fs.writeFile(path.resolve(process.cwd(), 'audiso.log'), `${batchLog.join('\n')}\n`, { flag : 'a' });
-                batchLog = [];
+                fs.writeFile(path.resolve(process.cwd(), 'audiso.log'), `${this.batchLog.join('\n')}\n`, { flag : 'a' });
+                this.batchLog = [];
             }
         }
 
