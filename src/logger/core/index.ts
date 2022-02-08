@@ -100,8 +100,9 @@ export abstract class Logger {
      */
     public trace<T extends Error>(level: ELoggerLevel, theme: string, message : string, error : T) {
         if (level >= configuration[theme].level) {
-        const message = getMessage(level, theme, message, error);
-        configuration[theme].appenders.forEach((appender) => appender(message));
+            const message = getMessage(level, theme, message, error);
+            configuration[theme].appenders.forEach((appender) => appender(message));
+        }
     }
     /**
      * method to format message list to log
