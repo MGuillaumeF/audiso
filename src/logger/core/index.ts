@@ -42,24 +42,24 @@ export abstract class Logger {
      * @param theme the theme associated of log
      * @param messages the liste of message to log
      */
-    public debug(theme: string, …messages : string[]) {
-        trace(ELoggerLevel.DEBUG, theme, …messages);
+    public debug(theme: string, ...messages : string[]) {
+        trace(ELoggerLevel.DEBUG, theme, ...messages);
     }
     /**
      * method to print message
      * @param theme the theme associated of log
      * @param messages the liste of message to log
      */
-    public info(theme: string, …messages : string[]) {
-        trace(ELoggerLevel.INFO, theme, …messages);
+    public info(theme: string, ...messages : string[]) {
+        trace(ELoggerLevel.INFO, theme, ...messages);
     }
     /**
      * method to print message
      * @param theme the theme associated of log
      * @param messages the liste of message to log
      */
-    public warn(theme: string, …messages : string[]) {
-        trace(ELoggerLevel.WARN, theme, …messages);
+    public warn(theme: string, ...messages : string[]) {
+        trace(ELoggerLevel.WARN, theme, ...messages);
     }
     /**
      * method to print message
@@ -85,7 +85,7 @@ export abstract class Logger {
      * @param theme the theme associated of log
      * @param messages the liste of message to log
      */
-    public trace(level: ELoggerLevel, theme: string, …messages : string[]): void {
+    public trace(level: ELoggerLevel, theme: string, ...messages : string[]): void {
     if (level >= configuration[theme].level) {
         const message = getMessage(level, theme, messages);
         configuration[theme].appenders.forEach((appender) => appender(message));
