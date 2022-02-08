@@ -2,14 +2,16 @@ export enum ELoggerLevel {
     DEBUG,
     INFO,
     WARN,
-    ERROR
+    ERROR,
+    FATAL
 };
 
 export const MLogLevel = new Map<ELoggerLevel, string>([
         [ELoggerLevel.DEBUG, 'DEBUG'],
         [ELoggerLevel.INFO, 'INFO'],
         [ELoggerLevel.WARN, 'WARN'],
-        [ELoggerLevel.ERROR, 'ERROR']
+        [ELoggerLevel.ERROR, 'ERROR'] ,
+        [ELoggerLevel.FATAL, 'FATAL']
 ]);
 
 export type LoggerConfigurationItem = {
@@ -18,24 +20,13 @@ export type LoggerConfigurationItem = {
 };
 
 export abstract class Logger {
-    private static logger: Logger;
-    private configuration: { [key : string] : LoggerConfigurationItem };
+    private configuration: { [key : string] : LoggerConfigurationItem } = {};
 
     /**
      * constructor of Logger
      * private to prevent direct
      */
     private constructor() { }
-
-    /**
-     * static method access to the singleton instance.
-     */
-    public static getInstance(): Logger {
-        if (!Logger.logger) {
-            Logger.logger = new Logger();
-        }
-        return Logger.logger;
-    }
 
     /**
      * method to print message
@@ -137,6 +128,18 @@ const theme : {[key: string] : string} = {
 
 export class CliLogger extends Logger {
     private batchLog : string[] = [];
+
+    private static logger: CliLogger;
+    /**
+     * static method access to the singleton instance.
+     */
+    public static getInstance(): CliLogger {
+        if (! CliLogger.logger) {
+            CliLogger.logger = new CliLogger();
+        }
+        return CliLogger.logger;
+    }
+
     constructor () {
         this.configuration = {
             IO : {
@@ -175,6 +178,6 @@ export class CliLogger extends Logger {
         public stopLogger() : void {
             fs.writeFile(path.resolve(process.cwd(), 'audiso.log'), `${this.batchLog.join('\n')}\n`, { flag : 'a' });
             this.batchLog = [];
-            delete Logger.logger;
+            delete CliLogger.logger;
         }
 }
