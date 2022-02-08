@@ -20,13 +20,13 @@ export type LoggerConfigurationItem = {
 };
 
 export abstract class Logger {
-    private configuration: { [key : string] : LoggerConfigurationItem } = {};
+    protected configuration: { [key : string] : LoggerConfigurationItem } = {};
 
     /**
      * constructor of Logger
-     * private to prevent direct
+     * protected to prevent direct
      */
-    private constructor() { }
+    protected constructor() { }
 
     /**
      * method to print message
@@ -77,7 +77,7 @@ export abstract class Logger {
      * @param messages the liste of message to log
      */
     public trace(level: ELoggerLevel, theme: string, messages : string[]): void {
-    if (level >= configuration[theme].level) {
+    if (level >= this.configuration[theme].level) {
         const message = this.getMessage(level, theme, messages);
         this.configuration[theme].appenders.forEach((appender) => appender(message));
     }
@@ -157,6 +157,7 @@ export class CliLogger extends Logger {
                 ]
             }
         };
+        super();
     }
         private write(message : string) : void {
             if (this.batchLog.length < 20) {
