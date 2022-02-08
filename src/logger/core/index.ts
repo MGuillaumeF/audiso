@@ -19,7 +19,7 @@ export type LoggerConfigurationItem = {
 
 export abstract class Logger {
     private static logger: Logger;
-    private configuration: { [key : string] : LoggerConfigurationItem }
+    private configuration: { [key : string] : LoggerConfigurationItem };
 
     /**
      * constructor of Logger
@@ -67,7 +67,7 @@ export abstract class Logger {
      * @param message the message to log
      * @param error the exception to log
      */
-    public error<T extends Error>(theme: string, messages : string, error : T) {
+    public error<T extends Error>(theme: string, message : string, error : T) {
         this.trace(ELoggerLevel.ERROR, theme, message, error);
     }
     /**
@@ -76,7 +76,7 @@ export abstract class Logger {
      * @param message the message to log
      * @param error the exception to log
      */
-    public fatal<T extends Error>(theme: string, messages : string, error : T) {
+    public fatal<T extends Error>(theme: string, message : string, error : T) {
         this.trace(ELoggerLevel.FATAL, theme, message, error);
     }
 
@@ -87,7 +87,7 @@ export abstract class Logger {
      */
     public trace(level: ELoggerLevel, theme: string, ...messages : string[]): void {
     if (level >= configuration[theme].level) {
-        const message = getMessage(level, theme, messages);
+        const message = this.getMessage(level, theme, messages);
         this.configuration[theme].appenders.forEach((appender) => appender(message));
     }
 }
@@ -100,7 +100,7 @@ export abstract class Logger {
      */
     public trace<T extends Error>(level: ELoggerLevel, theme: string, message : string, error : T) {
         if (level >= configuration[theme].level) {
-            const message = getMessage(level, theme, message, error);
+            const message = this.getMessage(level, theme, message, error);
             this.configuration[theme].appenders.forEach((appender) => appender(message));
         }
     }
@@ -173,8 +173,8 @@ export class CliLogger extends Logger {
         }
 
         public stopLogger() : void {
-            fs.writeFile(path.resolve(process.cwd(), 'audiso.log'), `${batchLog.join('\n')}\n`, { flag : 'a' });
-                batchLog = [];
+            fs.writeFile(path.resolve(process.cwd(), 'audiso.log'), `${this.batchLog.join('\n')}\n`, { flag : 'a' });
+            this.batchLog = [];
             delete Logger.logger;
         }
 }
