@@ -177,5 +177,4 @@ export class CliLogger extends Logger {
                 batchLog = [];
             delete Logger.logger;
         }
-    }
 }
