@@ -111,7 +111,7 @@ export const LoggerTheme : {[key: string] : string} = {
 
 
 export class CliLogger extends Logger {
-    private batchLog : string[] = [];
+    private static batchLog : string[] = [];
 
     private static logger: CliLogger | null = null;
     /**
@@ -144,11 +144,11 @@ export class CliLogger extends Logger {
         };
     }
         private write(message : string) : void {
-            if (this.batchLog.length < MAX_COL) {
-                this.batchLog.push(message);
+            if (CliLogger.batchLog.length < MAX_COL) {
+                CliLogger.batchLog.push(message);
             } else {
-                fs.writeFile(path.resolve(process.cwd(), 'audiso.log'), `${this.batchLog.join('\n')}\n`, { flag : 'a' });
-                this.batchLog = [];
+                fs.writeFile(path.resolve(process.cwd(), 'audiso.log'), `${CliLogger.batchLog.join('\n')}\n`, { flag : 'a' });
+                CliLogger.batchLog = [];
             }
         }
 
