@@ -158,7 +158,7 @@ export class CliLogger extends Logger {
 
         public stopLogger() : void {
             fs.writeFile(path.resolve(process.cwd(), 'audiso.log'), `${this.batchLog.join('\n')}\n`, { flag : 'a' });
-            this.batchLog = [];
+            CliLogger.batchLog = [];
             CliLogger.logger = null;
         }
 }
