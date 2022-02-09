@@ -77,9 +77,9 @@ export abstract class Logger {
      * @param messages the list of message to log
      * @param error the exception to log
      */
-    public trace(level: ELoggerLevel, theme: string, message : string, error ?: Error) {
+    public trace(level: ELoggerLevel, theme: string, messages : string[], error ?: Error) {
         if (level >= this.configuration[theme].level) {
-            const message = this.getMessage(level, theme, [message], error);
+            const message = this.getMessage(level, theme, messages, error);
             this.configuration[theme].appenders.forEach((appender) => appender(message));
         }
     }
@@ -149,7 +149,7 @@ export class CliLogger extends Logger {
         }
 
        public getMessage<T extends Error>(level : ELoggerLevel, theme : string, messages : string[], error ?: Error) : string {
-            return `${(new Date()).toLocaleString('fr-FR')} [${MLogLevel.at(level)}] - ${theme} : ${messages.join(' ')} ${error?.message} - stack : ${error?.stack}`;
+            return `${(new Date()).toLocaleString('fr-FR')} [${MLogLevel.get(level)}] - ${theme} : ${messages.join(' ')} ${error?.message} - stack : ${error?.stack}`;
         }
 
         public stopLogger() : void {
