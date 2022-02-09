@@ -162,3 +162,12 @@ export class CliLogger extends Logger {
             CliLogger.logger = null;
         }
 }
+
+/**
+ * function to get have safe error from catch block argument
+ * @param error the error to check
+ * @param defaultValue the error if first argument is not valid
+ */
+export getError(error : unknown, defaultValue : string) : Error {
+    error instanceof Error ? error : Error(defaultValue);
+}
