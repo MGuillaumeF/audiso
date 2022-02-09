@@ -6,7 +6,7 @@ export enum ELoggerLevel {
     FATAL
 };
 
-const unit8_t MAX_COL = 30;
+const MAX_COL = 30;
 
 export const MLogLevel = new Map<ELoggerLevel, string>([
         [ELoggerLevel.DEBUG, 'DEBUG'],
