@@ -169,5 +169,5 @@ export class CliLogger extends Logger {
  * @param defaultValue the error if first argument is not valid
  */
 export getError(error : unknown, defaultValue : string) : Error {
-    error instanceof Error ? error : Error(defaultValue);
+    return error instanceof Error ? error : Error(defaultValue);
 }
