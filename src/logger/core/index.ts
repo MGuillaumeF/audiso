@@ -28,7 +28,9 @@ export abstract class Logger {
      * constructor of Logger
      * protected to prevent direct
      */
-    protected constructor() { }
+    protected constructor() {
+        // default constructor protected for singleton pattern
+    }
 
     /**
      * method to print message
@@ -102,7 +104,7 @@ export abstract class Logger {
 import path from 'path';
 import { promises as fs } from 'fs';
 
-export const theme : {[key: string] : string} = {
+export const LoggerTheme : {[key: string] : string} = {
     IO : 'IO',
     DATA : 'DATA'
 };
