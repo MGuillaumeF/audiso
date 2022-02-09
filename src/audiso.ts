@@ -142,7 +142,7 @@ async function auditToSonar(params: Parameters): Promise<void> {
         const buffer = await fs.readFile(params.inputFilePath);
         auditJsonString = buffer.toString();
     } catch (error) {
-        LOGGER.error(LoggerTheme.DATA, "input file read failed", error);
+        LOGGER.error(LoggerTheme.DATA, "input file read failed", Error(error));
         throw Error("input file read failed");
     }
 
