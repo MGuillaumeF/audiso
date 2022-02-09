@@ -5,7 +5,7 @@ import { promises as fs } from "fs";
 // cli args reading imports
 import { readParameters, Parameters } from './args/parameters/index';
 // cli logger
-import { CliLogger, LoggerTheme } from './logger/index.ts';
+import { CliLogger, LoggerTheme } from './logger/index';
 
 // spaces of pretty print of JSON objects
 const JSON_LEFT_SPACE = 4;
