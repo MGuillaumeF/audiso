@@ -6,6 +6,8 @@ export enum ELoggerLevel {
     FATAL
 };
 
+const unit8_t MAX_COL = 30;
+
 export const MLogLevel = new Map<ELoggerLevel, string>([
         [ELoggerLevel.DEBUG, 'DEBUG'],
         [ELoggerLevel.INFO, 'INFO'],
@@ -100,7 +102,7 @@ export abstract class Logger {
 import path from 'path';
 import { promises as fs } from 'fs';
 
-const theme : {[key: string] : string} = {
+export const theme : {[key: string] : string} = {
     IO : 'IO',
     DATA : 'DATA'
 };
@@ -148,7 +150,7 @@ export class CliLogger extends Logger {
             }
         }
 
-       public getMessage<T extends Error>(level : ELoggerLevel, theme : string, messages : string[], error ?: Error) : string {
+       public getMessage(level : ELoggerLevel, theme : string, messages : string[], error ?: Error) : string {
             return `${(new Date()).toLocaleString('fr-FR')} [${MLogLevel.get(level)}] - ${theme} : ${messages.join(' ')} ${error?.message} - stack : ${error?.stack}`;
         }
 
