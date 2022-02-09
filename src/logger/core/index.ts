@@ -97,7 +97,7 @@ export abstract class Logger {
 
 
 
-import path from path;
+import path from 'path';
 import { promises as fs } from 'fs';
 
 const theme : {[key: string] : string} = {
