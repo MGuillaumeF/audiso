@@ -98,7 +98,7 @@ export abstract class Logger {
 
 
 import path from path;
-import { promises as fs } from fs;
+import { promises as fs } from 'fs';
 
 const theme : {[key: string] : string} = {
     IO : 'IO',
@@ -114,7 +114,7 @@ export class CliLogger extends Logger {
      * static method access to the singleton instance.
      */
     public static getInstance(): CliLogger {
-        if (! CliLogger.logger) {
+        if (!CliLogger.logger) {
             CliLogger.logger = new CliLogger();
         }
         return CliLogger.logger;
