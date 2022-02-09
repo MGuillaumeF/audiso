@@ -4,11 +4,15 @@
 import { promises as fs } from "fs";
 // cli args reading imports
 import { readParameters, Parameters } from './args/parameters/index';
+// cli logger
+import { CliLogger, LoggerTheme } from './logger/index.ts';
 
 // spaces of pretty print of JSON objects
 const JSON_LEFT_SPACE = 4;
 // arguments of cli start at index 2
 const CLI_ARGUMENT_PADDING = 2;
+// init logger
+const LOGGER = CliLogger.getInstance();
 
 /**
  * type of vulnerability object of audit report (input)
@@ -77,7 +81,7 @@ export function isAudit(data: any): data is Audit {
         Object.entries(data.metadata.vulnerabilities).every(([key, value]) => {
             const isValid = typeof key === "string" && typeof value === "number";
             if (!isValid) {
-                console.error(`Invalid metadata ${key}, name of metadata is typeof ${typeof key}, value is ${value} of type ${typeof value}`);
+                LOGGER.error(LoggerTheme.DATA, 'Invalid metadata of vulnerability object', Error(`Invalid metadata ${key}, name of metadata is typeof ${typeof key}, value is ${value} of type ${typeof value}`));
             }
             return isValid;
         });
@@ -88,7 +92,7 @@ export function isAudit(data: any): data is Audit {
             const isVulnerabilityCheck = isVulnerability(value);
             const isValid = typeof key === "string" && isVulnerabilityCheck;
             if (!isValid) {
-                console.error(`Invalid vulnerability ${key}, name of vulnerability is typeof ${typeof key}, vulnerability check result ${isVulnerabilityCheck}`);
+                LOGGER.error(LoggerTheme.DATA, 'Invalid Audit Report', Error(`Invalid vulnerability ${key}, name of vulnerability is typeof ${typeof key}, vulnerability check result ${isVulnerabilityCheck}`));
             }
             return isValid;
         });
@@ -113,7 +117,7 @@ function isVulnerability(data: any): data is Vulnerability {
         data?.severity
     );
     if (!result) {
-        console.error(`is not a valid vulnerability object, data fixAvailable of ${data?.fixAvailable}, is direct ${data?.isDirect}, severity ${data?.severity}`);
+        LOGGER.error(LoggerTheme.DATA, 'Bad vulnerability object definition', Error(`is not a valid vulnerability object, data fixAvailable of ${data?.fixAvailable}, is direct ${data?.isDirect}, severity ${data?.severity}`));
     }
     return result;
 }
@@ -138,7 +142,7 @@ async function auditToSonar(params: Parameters): Promise<void> {
         const buffer = await fs.readFile(params.inputFilePath);
         auditJsonString = buffer.toString();
     } catch (error) {
-        console.error("input file read failed", error);
+        LOGGER.error(LoggerTheme.DATA, "input file read failed", error);
         throw Error("input file read failed");
     }
 
