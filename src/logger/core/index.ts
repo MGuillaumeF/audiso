@@ -109,7 +109,7 @@ const theme : {[key: string] : string} = {
 export class CliLogger extends Logger {
     private batchLog : string[] = [];
 
-    private static logger: CliLogger;
+    private static logger: CliLogger | null = null;
     /**
      * static method access to the singleton instance.
      */
@@ -155,6 +155,6 @@ export class CliLogger extends Logger {
         public stopLogger() : void {
             fs.writeFile(path.resolve(process.cwd(), 'audiso.log'), `${this.batchLog.join('\n')}\n`, { flag : 'a' });
             this.batchLog = [];
-            delete CliLogger.logger;
+            CliLogger.logger = null;
         }
 }
