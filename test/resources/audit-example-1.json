@@ -5,30 +5,20 @@
       "name": "anymatch",
       "severity": "low",
       "isDirect": false,
-      "via": [
-        "micromatch"
-      ],
-      "effects": [
-        "chokidar"
-      ],
+      "via": ["micromatch"],
+      "effects": ["chokidar"],
       "range": "1.2.0 - 1.3.2",
-      "nodes": [
-        "node_modules/anymatch"
-      ],
+      "nodes": ["node_modules/anymatch"],
       "fixAvailable": false
     },
     "babel-cli": {
       "name": "babel-cli",
       "severity": "high",
       "isDirect": true,
-      "via": [
-        "chokidar"
-      ],
+      "via": ["chokidar"],
       "effects": [],
       "range": "*",
-      "nodes": [
-        "node_modules/babel-cli"
-      ],
+      "nodes": ["node_modules/babel-cli"],
       "fixAvailable": false
     },
     "braces": {
@@ -46,46 +36,29 @@
           "range": "<2.3.1"
         }
       ],
-      "effects": [
-        "micromatch"
-      ],
+      "effects": ["micromatch"],
       "range": "<2.3.1",
-      "nodes": [
-        "node_modules/braces"
-      ],
+      "nodes": ["node_modules/braces"],
       "fixAvailable": false
     },
     "chokidar": {
       "name": "chokidar",
       "severity": "high",
       "isDirect": false,
-      "via": [
-        "anymatch",
-        "glob-parent"
-      ],
-      "effects": [
-        "babel-cli"
-      ],
+      "via": ["anymatch", "glob-parent"],
+      "effects": ["babel-cli"],
       "range": "1.0.0-rc1 - 2.1.8",
-      "nodes": [
-        "node_modules/chokidar"
-      ],
+      "nodes": ["node_modules/chokidar"],
       "fixAvailable": false
     },
     "glob-base": {
       "name": "glob-base",
       "severity": "high",
       "isDirect": false,
-      "via": [
-        "glob-parent"
-      ],
-      "effects": [
-        "parse-glob"
-      ],
+      "via": ["glob-parent"],
+      "effects": ["parse-glob"],
       "range": "*",
-      "nodes": [
-        "node_modules/glob-base"
-      ],
+      "nodes": ["node_modules/glob-base"],
       "fixAvailable": false
     },
     "glob-parent": {
@@ -103,10 +76,7 @@
           "range": "<5.1.2"
         }
       ],
-      "effects": [
-        "chokidar",
-        "glob-base"
-      ],
+      "effects": ["chokidar", "glob-base"],
       "range": "<5.1.2",
       "nodes": [
         "node_modules/chokidar/node_modules/glob-parent",
@@ -118,47 +88,30 @@
       "name": "micromatch",
       "severity": "high",
       "isDirect": false,
-      "via": [
-        "braces",
-        "parse-glob"
-      ],
-      "effects": [
-        "anymatch"
-      ],
+      "via": ["braces", "parse-glob"],
+      "effects": ["anymatch"],
       "range": "0.2.0 - 2.3.11",
-      "nodes": [
-        "node_modules/micromatch"
-      ],
+      "nodes": ["node_modules/micromatch"],
       "fixAvailable": false
     },
     "parse-glob": {
       "name": "parse-glob",
       "severity": "high",
       "isDirect": false,
-      "via": [
-        "glob-base"
-      ],
-      "effects": [
-        "micromatch"
-      ],
+      "via": ["glob-base"],
+      "effects": ["micromatch"],
       "range": ">=2.1.0",
-      "nodes": [
-        "node_modules/parse-glob"
-      ],
+      "nodes": ["node_modules/parse-glob"],
       "fixAvailable": false
     },
     "stylint": {
       "name": "stylint",
       "severity": "moderate",
       "isDirect": true,
-      "via": [
-        "yargs"
-      ],
+      "via": ["yargs"],
       "effects": [],
       "range": ">=1.3.9",
-      "nodes": [
-        "node_modules/stylint"
-      ],
+      "nodes": ["node_modules/stylint"],
       "fixAvailable": {
         "name": "stylint",
         "version": "1.3.8",
@@ -169,16 +122,10 @@
       "name": "yargs",
       "severity": "moderate",
       "isDirect": false,
-      "via": [
-        "yargs-parser"
-      ],
-      "effects": [
-        "stylint"
-      ],
+      "via": ["yargs-parser"],
+      "effects": ["stylint"],
       "range": "4.0.0-alpha1 - 7.0.0-alpha.3 || 7.1.1",
-      "nodes": [
-        "node_modules/stylint/node_modules/yargs"
-      ],
+      "nodes": ["node_modules/stylint/node_modules/yargs"],
       "fixAvailable": {
         "name": "stylint",
         "version": "1.3.8",
@@ -200,13 +147,9 @@
           "range": "<=5.0.0"
         }
       ],
-      "effects": [
-        "yargs"
-      ],
+      "effects": ["yargs"],
       "range": "<=5.0.0",
-      "nodes": [
-        "node_modules/stylint/node_modules/yargs-parser"
-      ],
+      "nodes": ["node_modules/stylint/node_modules/yargs-parser"],
       "fixAvailable": {
         "name": "stylint",
         "version": "1.3.8",

@@ -18,13 +18,7 @@
     "type": "git",
     "url": "git+https://github.com/MGuillaumeF/audiso.git"
   },
-  "keywords": [
-    "vulnerability",
-    "sonarqube",
-    "audit",
-    "audiso",
-    "quality"
-  ],
+  "keywords": ["vulnerability", "sonarqube", "audit", "audiso", "quality"],
   "author": "MGuillaumeF",
   "license": "GPL-3.0-or-later",
   "bugs": {
