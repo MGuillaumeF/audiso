@@ -141,24 +141,12 @@ function isVulnerability(data: any): data is Vulnerability {
   return result;
 }
 
-/**
- * Function to convert npm-audit report to sonarqube generic issue  json format
- * @param params Run parameters (entry, output, package)
- */
-async function auditToSonar(params: Parameters): Promise<void> {
-  // map to convert npm-audit severity to sonarqube severity
-  const npmSeverityToSonar = new Map([
-    ["info", "INFO"],
-    ["low", "MINOR"],
-    ["moderate", "MINOR"],
-    ["high", "MAJOR"],
-    ["critical", "CRITICAL"]
-  ]);
-
+async function readAuditEntry(inputFilePath : string): Promise<Audit> {
+    
   let auditJsonString = "";
   // read input file
   try {
-    const buffer = await fs.readFile(params.inputFilePath);
+    const buffer = await fs.readFile(inputFilePath);
     auditJsonString = buffer.toString();
   } catch (error) {
     const rethrowError = Error("input file read failed");
@@ -185,12 +173,31 @@ async function auditToSonar(params: Parameters): Promise<void> {
     );
     throw rethrowError;
   }
+  
   // narrowing of data as audit object
   if (isAudit(data)) {
     audit = data;
   } else {
     throw Error("entry data is not a valid npm-audit data");
   }
+  return audit;
+}
+
+/**
+ * Function to convert npm-audit report to sonarqube generic issue  json format
+ * @param params Run parameters (entry, output, package)
+ */
+async function auditToSonar(params: Parameters): Promise<void> {
+  // map to convert npm-audit severity to sonarqube severity
+  const npmSeverityToSonar = new Map([
+    ["info", "INFO"],
+    ["low", "MINOR"],
+    ["moderate", "MINOR"],
+    ["high", "MAJOR"],
+    ["critical", "CRITICAL"]
+  ]);
+
+  const audit = await readAuditEntry(params.inputFilePath);
   const issues = [];
   // generate engine id for all issues
   const engineId = `npm-audit-${audit.auditReportVersion}`;
