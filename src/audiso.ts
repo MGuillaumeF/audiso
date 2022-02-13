@@ -281,7 +281,6 @@ async function auditToSonar(params: Parameters): Promise<void> {
 // if run with node command
 if (require.main === module) {
   (async function () {
-      // let result = 0;
     try {
       // get arguments of process run
       const args = process.argv.slice(CLI_ARGUMENT_PADDING);
@@ -296,7 +295,6 @@ if (require.main === module) {
         throw error;
       }
     } catch (error) {
-        // result = 1;
       const rethrowError = Error("convert failed with error");
       LOGGER.error(
         LoggerTheme.IO,
@@ -304,10 +302,7 @@ if (require.main === module) {
         error instanceof Error ? error : rethrowError
       );
       process.exit(1);
-    } /*finally {
-        LOGGER.stopLogger();
-        process.exit(result);
-    }*/
+    }
   })();
 }
 
