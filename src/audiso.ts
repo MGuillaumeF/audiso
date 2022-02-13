@@ -142,7 +142,6 @@ function isVulnerability(data: any): data is Vulnerability {
 }
 
 async function readAuditEntry(inputFilePath : string): Promise<Audit> {
-    
   let auditJsonString = "";
   // read input file
   try {
@@ -173,7 +172,7 @@ async function readAuditEntry(inputFilePath : string): Promise<Audit> {
     );
     throw rethrowError;
   }
-  
+
   // narrowing of data as audit object
   if (isAudit(data)) {
     audit = data;
