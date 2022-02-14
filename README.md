@@ -6,10 +6,21 @@
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=MGuillaumeF_audiso&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=MGuillaumeF_audiso)
 [![wakatime](https://wakatime.com/badge/user/9f76e922-98e1-4ef0-b832-f1f6bb21d4c3/project/c585b742-afcf-4449-bcd0-d7c4231715bf.svg)](https://wakatime.com/badge/user/9f76e922-98e1-4ef0-b832-f1f6bb21d4c3/project/c585b742-afcf-4449-bcd0-d7c4231715bf)
 
-## description 
+## description
+
 This module module convert npm-audit json report to sonarqube generic data issue report
 
 ## how to use
+
+### help message
+
+```
+*** NOTICE : @mguillaumef/audiso v0.0.3
+This module module convert npm-audit json report to sonarqube generic data issue report.
+[-p], [--package-file]         1   string   The path of package.json (default: ./package.json)
+[-o], [--output-file]          1   string   The output path of sonarqube issue report (default: ./audit-dependency-report-sonarqube.json)
+[-i], [--input-file]           1   string   The input path of npm-audit report (default: ./audit-dependency-report.json)
+```
 
 ### generate npm-audit report (npm>=8)
 
