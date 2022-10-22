@@ -15,6 +15,22 @@ env:
 permissions: write-all
 
 jobs:
+  clear:
+    runs-on: ubuntu-latest
+    name: A job to delete old workflow runs
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Delete workflow runs
+      uses: MajorScruffy/delete-old-workflow-runs@v0.3.0
+      with:
+        repository: MGuillaumeF/audiso
+        workflow: ".github/workflows/default.yml"
+        older-than-seconds: 86400   
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   sonarcloud-analyse:
     runs-on: ubuntu-latest
     steps:
