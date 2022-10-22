@@ -59,7 +59,7 @@ jobs:
           path: ${{github.workspace}}/coverage
 
       - name: Setup sonarqube
-        uses: warchant/setup-sonar-scanner@v3
+        uses: warchant/setup-sonar-scanner@v4
 
       - name: Run SonarQube
         env:
