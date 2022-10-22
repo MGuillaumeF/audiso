@@ -68,13 +68,13 @@ jobs:
         run: audiso --input-file=./dist/reports/audit-dependency-report.json --output-file ./dist/reports/audit-dependency-report-sonarqube.json
 
       - name: Archive Analyses reports
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: AudiSo-Analyses-report
           path: ${{github.workspace}}/dist/reports
 
       - name: Coverage reports
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Coverage-report
           path: ${{github.workspace}}/coverage
